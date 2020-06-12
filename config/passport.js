@@ -1,4 +1,4 @@
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3306;
 
 const passport = require("passport"),
   LocalStrategy = require("passport-local").Strategy,
@@ -46,11 +46,11 @@ passport.use(
     {
       clientID: "2597657447149490",
       clientSecret: "a8b7528e08ae763f11783464dbe335a3",
-      callbackURL: "https://127.0.0.1:" + PORT + "/facebook-token"
+      callbackURL: "https://travexproject.herokuapp.com/auth/facebook/callback"
     },
     (accessToken, refreshToken, profile, cb) => {
-      process.nextTick(() => {
-        return cb(null, profile);
+      User.findOrCreate({ facebookId: profile.id }, (err, user) => {
+        return cb(err, user);
       });
     }
   )
