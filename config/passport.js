@@ -51,6 +51,7 @@ passport.use(
     },
     (accessToken, refreshToken, profile, cb) => {
       User.findOrCreate({ facebookId: profile.id }, (err, user) => {
+        console.log(user);
         return cb(err, user);
       });
     }
