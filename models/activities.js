@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
 
 module.exports = function(sequelize, DataTypes) {
 
-  const Activities = sequelize.define("Activities", {
+  const activities = sequelize.define("activities", {
 
     // The email cannot be null, and must be a proper email before creation
 
@@ -73,6 +73,6 @@ module.exports = function(sequelize, DataTypes) {
   });
 
 
-  return Activities;
+  return activities;
 
 };
