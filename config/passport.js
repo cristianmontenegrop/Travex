@@ -1,5 +1,11 @@
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
+const PORT = process.env.PORT || 8080;
+
+const passport = require("passport"),
+  LocalStrategy = require("passport-local").Strategy,
+  FacebookStrategy = require("passport-facebook").Strategy
+  // GitHubStrategy = require("passport-github").Strategy,
+  // GoogleStrategy = require("passport-google-oauth").OAuthStrategy
+  ;
 
 const db = require("../models");
 
@@ -35,6 +41,56 @@ passport.use(
     }
   )
 );
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: "2597657447149490",
+      clientSecret: "a8b7528e08ae763f11783464dbe335a3",
+      callbackURL: "https://127.0.0.1:" + PORT + "/facebook-token"
+    },
+    (accessToken, refreshToken, profile, cb) => {
+      process.nextTick(() => {
+        return cb(null, profile);
+      });
+    }
+  )
+);
+
+// passport.use(
+//   new GitHubStrategy(
+//     {
+//       clientID: GITHUB_CLIENT_ID,
+//       clientSecret: GITHUB_CLIENT_SECRET,
+//       callbackURL: "http://127.0.0.1:" + PORT + "/auth/github/callback"
+//     },
+//     (accessToken, refreshToken, profile, cb) => {
+//       User.findOrCreate({ githubId: profile.id }, (err, user) => {
+//         return cb(err, user);
+//       });
+//     }
+//   )
+// );
+
+// passport.use(
+//   new GoogleStrategy(
+//     {
+//       clientID: GOOGLE_CLIENT_ID,
+//       clientSecret: GOOGLE_CLIENT_SECRET,
+//       callbackURL: "http://www.example.com/auth/google/callback"
+//       // clientID:
+//       //   "595606650638-04ugaq25i1gtsm3aqg74c6f4h085incb.apps.googleusercontent.com",
+//       // clientSecret: "TUjbOyiUaFvnWvgQFeFi_a6j",
+//       // callbackURL: "http://localhost:8080/google/callback"
+//     },
+//     (accessToken, refreshToken, profile, cb) => {
+//       User.findOrCreate({ googleId: profile.id }, (err, user) => {
+//         // return cb(err, user)
+//         // console.log(profile)
+//         return cb(err, user);
+//       });
+//     }
+//   )
+// );
 
 // In order to help keep authentication state across HTTP requests,
 // Sequelize needs to serialize and deserialize the user

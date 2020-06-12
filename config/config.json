@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "passport_demo",
-    "host": "127.0.0.1",
+    "username": "o2m1feax5jdm5qgc",
+    "password": "sve6g57elfwpezzr",
+    "database": "m4k9szrmlhvoxnvl",
+    "host": "arfo8ynm6olw6vpn.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "dialect": "mysql"
   },
   "test": {
@@ -14,7 +14,7 @@
     "dialect": "mysql"
   },
   "production": {
-    "use_env_variable": "JAWSDB_URL",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "use_env_variable": "mysql://o2m1feax5jdm5qgc:sve6g57elfwpezzr@arfo8ynm6olw6vpn.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/m4k9szrmlhvoxnvl"
   }
 }
