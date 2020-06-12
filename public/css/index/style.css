@@ -1,0 +1,29 @@
+.background {
+    width: 100%;
+    background: url(../../assets/white-clouds-2114014.jpg);
+    background-position: center top;
+    background-size:cover;
+}
+/*  */
+.swiper-container {
+  width: 300px;
+  height: 266px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -150px;
+  margin-top: -150px;
+  left: -60px;
+  top: 150px;
+}
+
+.swiper-container-cube {
+  height: 260x !important;
+  width: 275px !important;
+  }
+  .swiper-slide {
+    background-position: center;
+    background-size: cover;
+  }
+/*  */
+
