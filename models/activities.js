@@ -75,7 +75,7 @@ module.exports = function(sequelize, DataTypes) {
  
       },
 
-      Itinerary_5: {
+      Activity_5: {
 
         type: DataTypes.STRING,
   
