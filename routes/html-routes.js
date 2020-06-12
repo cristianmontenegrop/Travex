@@ -56,19 +56,19 @@ function upSplashAJAX(country) {
 }
 
 
-app.get("/members/:id", function (req, res){
-  //get 
-  db.Itinerary.findOne({
-    where: {
-      User_id: req.params.id
-    }
-  }).then(function(dbItinerary){
-    console.log(res.json(dbItinerary))
-    country = res.json(dbItinerary.country)
-    upSplashAJAX(country)
+// app.get("/members/:id", function (req, res){
+//   //get 
+//   db.Itineraries.findOne({
+//     where: {
+//       User_id: req.params.id
+//     }
+//   }).then(function(dbItineraries){
+//     console.log(res.json(dbItineraries))
+//     country = res.json(dbItineraries.country)
+//     upSplashAJAX(country)
   
-  })
-})
+//   })
+// })
 
 
 // Exchange rate calculator
@@ -80,28 +80,28 @@ app.get("/members/:id", function (req, res){
 // ==================================================
 
 
-app.get("/", (req, res) => {
-  // If the user already has an account send them to the members page
-  if (req.user) {
-    res.redirect("/members");
-  }
-  // Static HTML 
-  res.sendFile(path.join(__dirname, "../public/signup.html"));
+// app.get("/", (req, res) => {
+//   // If the user already has an account send them to the members page
+//   if (req.user) {
+//     res.redirect("/members");
+//   }
+//   // Static HTML 
+//   res.sendFile(path.join(__dirname, "../public/signup.html"));
 
-  // Needs to be converted to Handlebars.js
+//   // Needs to be converted to Handlebars.js
 
 
-});
+// });
 
 
 // Here we've add our isAuthenticated middleware to this route.
   // If a user who is not logged in tries to access this route they will be redirected to the signup page
-  app.get("/members", isAuthenticated, (req, res) => {
+  // app.get("/members", isAuthenticated, (req, res) => {
 
-    // Statis HTML
-    res.sendFile(path.join(__dirname, "../public/members.html"));
+  //   // Statis HTML
+  //   res.sendFile(path.join(__dirname, "../public/members.html"));
 
-    // Needs to be converted to Handlebars.js
+  //   // Needs to be converted to Handlebars.js
 
 
-  });
+  // });
