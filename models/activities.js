@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
 
 module.exports = function(sequelize, DataTypes) {
 
-  const Itenerary = sequelize.define("Itenerary", {
+  const Activity = sequelize.define("Activity", {
 
     // The email cannot be null, and must be a proper email before creation
 
@@ -28,7 +28,7 @@ module.exports = function(sequelize, DataTypes) {
 
       allowNull: false
 
-    }
+    },
 
     City: {
 
@@ -36,51 +36,43 @@ module.exports = function(sequelize, DataTypes) {
   
         allowNull: false
   
-      }
+      },
 
-      Itinerary_1: {
-
-        type: DataTypes.STRING,
-  
-        allowNull: false
-  
-      }
-
-      Itinerary_2: {
+      Activity_1: {
 
         type: DataTypes.STRING,
   
         allowNull: false
   
-      }
+      },
 
-      Itinerary_3: {
-
-        type: DataTypes.STRING,
-  
-        allowNull: false
-  
-      }
-
-      Itinerary_4: {
+      Activity_2: {
 
         type: DataTypes.STRING,
-  
-        allowNull: false
-  
-      }
+         
+      },
+
+      Activity_3: {
+
+        type: DataTypes.STRING,
+    
+      },
+
+      Activity_4: {
+
+        type: DataTypes.STRING,
+ 
+      },
 
       Itinerary_5: {
 
         type: DataTypes.STRING,
-  
-        allowNull: false
   
       }
 
   });
 
 
-  return Itenerary;
+  return Activity;
 
 };
