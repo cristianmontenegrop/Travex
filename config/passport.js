@@ -47,6 +47,7 @@ passport.use(
       clientID: "2597657447149490",
       clientSecret: "a8b7528e08ae763f11783464dbe335a3",
       callbackURL: "https://travexproject.herokuapp.com/auth/facebook/callback"
+      // profileFields: ['id', 'displayName', 'photos', 'email']
     },
     (accessToken, refreshToken, profile, cb) => {
       User.findOrCreate({ facebookId: profile.id }, (err, user) => {
