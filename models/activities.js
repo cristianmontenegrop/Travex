@@ -20,6 +20,17 @@ module.exports = function(sequelize, DataTypes) {
 
     },
 
+    // Trip_ID cannot be null
+
+    Trip_ID: {
+
+      type: DataTypes.INTEGER,
+
+      allowNull: false,
+
+
+    },
+
     // The password cannot be null
 
     Country: {
