@@ -46,7 +46,8 @@ function myFunction() {
             user: sessionStorage.getItem('User').replace(/\s+/g, '-').toLowerCase(),
             country: country.replace(/\s+/g, '-').toLowerCase(),
             city: city[0].replace(/\s+/g, '-').toLowerCase(),
-            place_one: event.target.id
+            activity_one: event.target.id,
+
         }
         $.post("/api/trips", tripData)
     } else {
