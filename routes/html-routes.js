@@ -12,25 +12,33 @@ module.exports = function (app) {
     if (req.user) {
       res.redirect("/index");
     }
-    res.sendFile(path.join(__dirname, "../public/login.html"));
+    // res.sendFile(path.join(__dirname, "../public/login.html"));
+    // Handlebars:
+    res.render("login");
   });
-  app.get("/index", (req, res) => {
-    // If the user already has an account send them to the members page
-    res.sendFile(path.join(__dirname, "../public/index.html"));
-  });
+  // app.get("/index", (req, res) => {
+  //   // If the user already has an account send them to the members page
+  //   // res.sendFile(path.join(__dirname, "../public/index.html"));
+  //   // Handlebars:
+  //   res.render("index");
+  // });
 
   app.get("/login", (req, res) => {
     // If the user already has an account send them to the members page
     if (req.user) {
-      res.redirect("/index.html");
+      res.redirect("/index");
     }
-    res.sendFile(path.join(__dirname, "../public/login.html"));
+    // res.sendFile(path.join(__dirname, "../public/login.html"));
+    // Handlebars:
+    res.render("login");
   });
 
   // Here we've add our isAuthenticated middleware to this route.
   // If a user who is not logged in tries to access this route they will be redirected to the signup page
   app.get("/index", isAuthenticated, (req, res) => {
-    res.sendFile(path.join(__dirname, "../public/index.html"));
+    // res.sendFile(path.join(__dirname, "../public/index.html"));
+    // Handlebars:
+    res.render("index");
   });
 
   app.get('/auth/github', passport.authenticate('github'))
@@ -38,6 +46,12 @@ module.exports = function (app) {
     successRedirect: '/index',
     failureRedirect: '/failed'
   }))
+
+  app.get("/failed", isAuthenticated, (req, res) => {
+    // res.sendFile(path.join(__dirname, "../public/index.html"));
+    // Handlebars:
+    res.render("failed");
+  });
 
   app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
   app.get('/google/callback', passport.authenticate('google', { failureRedirect: '/failed' }),
