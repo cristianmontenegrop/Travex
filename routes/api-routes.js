@@ -69,23 +69,53 @@ module.exports = function (app) {
     })
   );
   // 
-};
 
   // AXIOS
   // ======================================================================
   const axios = require('axios');  
+
+
   app.get("/api/things-to-do/:country:city", function(req, res) {
     var country = req.params.country;
     var city = req.params.city;
-
-    //Setup OpenTripMap axios call:
     apiKeyOTM = "5ae2e3f221c38a28845f05b63bcb2439d3637d8dfb5b37ef5e47b686";
-    url = "https://api.opentripmap.com/0.1/en/places/geoname?name="+city+"&apikey="+apiKeyOTM+"";
-    axios.get(url)
-    .then((response)=>{
-      console.log(response)
-    })
-    .catch((error)=>{
-      console.log(error)
-    })
+    axiosOTM(city);
+
+    //Setup for OpenTripMap axios call:
+    function axiosOTM(city){
+        // First axios call gathers latitue and longitude based on city query
+        var url = "https://api.opentripmap.com/0.1/en/places/geoname?name="+city+"&apikey="+apiKeyOTM+"";
+        axios.get(url)
+        .then((response)=>{
+        console.log(response.data.lat, response.data.lon);
+        var lat = response.data.lat;
+        var lon = response.data.lon;
+        console.log(lat);
+
+        // Second axios call gathers 5 (can be set by limit) features within 10KM with a rating of 2 or higher; feature id is "xid"
+        url = "https://api.opentripmap.com/0.1/en/places/radius?radius=10000&limit=5&offset=0&rate=2&format=json&lon="+lon+"&lat="+lat+"&apikey="+apiKeyOTM+"";
+        axios.get(url)
+        .then((response)=>{
+        console.log(response.data[0]);
+        console.log(response.data[0].xid);
+        var xid = response.data[0].xid;
+        url = "https://api.opentripmap.com/0.1/en/places/xid/"+xid+"?apikey="+apiKeyOTM+"";
+
+        // Third axios call searches the feature id for a picture and description
+        axios.get(url)
+        .then((response)=>{
+            console.log(response.data.image)
+            console.log(response.data.wikipedia_extracts.text)
+        })
+        .catch((error)=>{
+        console.log(error)
+          })
+         })
+        })
+    }
+    // Almost there! Need to compile response datas in json object with 5 results and then res.json(axiosdata)
+  
   })
+};
+
+  
