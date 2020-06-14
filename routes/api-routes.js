@@ -83,37 +83,86 @@ module.exports = function (app) {
 
     //Setup for OpenTripMap axios call:
     function axiosOTM(city){
-        // First axios call gathers latitue and longitude based on city query
-        var url = "https://api.opentripmap.com/0.1/en/places/geoname?name="+city+"&apikey="+apiKeyOTM+"";
-        axios.get(url)
-        .then((response)=>{
-        console.log(response.data.lat, response.data.lon);
-        var lat = response.data.lat;
-        var lon = response.data.lon;
-        console.log(lat);
+      // First axios call gathers latitue and longitude based on city query
+      var url = "https://api.opentripmap.com/0.1/en/places/geoname?name="+city+"&apikey="+apiKeyOTM+"";
+      axios.get(url)
+      .then((response)=>{
+      console.log(response.data.lat, response.data.lon);
+      var lat = response.data.lat;
+      var lon = response.data.lon;
+      console.log(lat);
 
-        // Second axios call gathers 5 (can be set by limit) features within 10KM with a rating of 2 or higher; feature id is "xid"
-        url = "https://api.opentripmap.com/0.1/en/places/radius?radius=10000&limit=5&offset=0&rate=2&format=json&lon="+lon+"&lat="+lat+"&apikey="+apiKeyOTM+"";
-        axios.get(url)
-        .then((response)=>{
-        console.log(response.data[0]);
-        console.log(response.data[0].xid);
-        var xid = response.data[0].xid;
-        url = "https://api.opentripmap.com/0.1/en/places/xid/"+xid+"?apikey="+apiKeyOTM+"";
+      // Second axios call gathers features within 10KM with a rating of 2 or higher; feature id is "xid"
+      url = "https://api.opentripmap.com/0.1/en/places/radius?radius=10000&limit=5&offset=0&rate=2&format=json&lon="+lon+"&lat="+lat+"&apikey="+apiKeyOTM+"";
+      axios.get(url)
+      .then((response)=>{
+      var arr = [];
+      var nameArr =[];
+      var kindArr = [];
+      var imgArr = [];
+      var descriptionArr =[];
+      var xidArr = []
+      
+      for (var i=0; i<5; i++){
+          nameArr.push(response.data[i].name)
+          kindArr.push(response.data[i].kinds);
+          xidArr.push(response.data[i].xid)
+      }
+      url = "https://api.opentripmap.com/0.1/en/places/xid/"+xidArr[0]+"?apikey="+apiKeyOTM+"";
 
-        // Third axios call searches the feature id for a picture and description
-        axios.get(url)
-        .then((response)=>{
-            console.log(response.data.image)
-            console.log(response.data.wikipedia_extracts.text)
-        })
-        .catch((error)=>{
-        console.log(error)
-          })
-         })
-        })
-    }
-    // Almost there! Need to compile response datas in json object with 5 results and then res.json(axiosdata)
+      // Series of axios calls searches the feature ids for a pictures and descriptions and pushes them to an array
+      axios.get(url).then((response)=>{
+          image = response.data.image;
+          description = response.data.wikipedia_extracts.text;
+          imgArr.push(image);
+          descriptionArr.push(description);
+          url = "https://api.opentripmap.com/0.1/en/places/xid/"+xidArr[1]+"?apikey="+apiKeyOTM+"";
+      axios.get(url).then((response)=>{
+          image = response.data.image;
+          description = response.data.wikipedia_extracts.text;
+          imgArr.push(image);
+          descriptionArr.push(description);
+          url = "https://api.opentripmap.com/0.1/en/places/xid/"+xidArr[2]+"?apikey="+apiKeyOTM+"";
+      axios.get(url).then((response)=>{
+          image = response.data.image;
+          description = response.data.wikipedia_extracts.text;
+          imgArr.push(image);
+          descriptionArr.push(description);
+          url = "https://api.opentripmap.com/0.1/en/places/xid/"+xidArr[3]+"?apikey="+apiKeyOTM+"";
+      axios.get(url).then((response)=>{
+          image = response.data.image;
+          description = response.data.wikipedia_extracts.text;
+          imgArr.push(image);
+          descriptionArr.push(description);
+          url = "https://api.opentripmap.com/0.1/en/places/xid/"+xidArr[4]+"?apikey="+apiKeyOTM+"";
+      axios.get(url).then((response)=>{
+          image = response.data.image;
+          description = response.data.wikipedia_extracts.text;
+          imgArr.push(image);
+          descriptionArr.push(description);
+          // push all the arrays into an object and back into a final array of objects;
+          for (var i=0; i<5; i++){
+              var dataObj ={};
+              dataObj['name']= nameArr[i]
+              dataObj['kind']= kindArr[i]
+              dataObj['image']= imgArr[i]
+              dataObj['description']= descriptionArr[i]
+              arr.push(dataObj);
+          }
+          console.log(arr);
+      })
+      .catch((error)=>{
+      console.log(error)
+      })
+      })
+      })
+      })
+      })
+      })
+      })
+      }
+    // Almost there! We now have an array of objects to send somewhere
+    res.json(arr);
   
   })
 };
