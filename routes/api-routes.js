@@ -70,3 +70,22 @@ module.exports = function (app) {
   );
   // 
 };
+
+  // AXIOS
+  // ======================================================================
+  const axios = require('axios');  
+  app.get("/api/things-to-do/:country:city", function(req, res) {
+    var country = req.params.country;
+    var city = req.params.city;
+
+    //Setup OpenTripMap axios call:
+    apiKeyOTM = "5ae2e3f221c38a28845f05b63bcb2439d3637d8dfb5b37ef5e47b686";
+    url = "https://api.opentripmap.com/0.1/en/places/geoname?name="+city+"&apikey="+apiKeyOTM+"";
+    axios.get(url)
+    .then((response)=>{
+      console.log(response)
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  })
