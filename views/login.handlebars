@@ -4,10 +4,11 @@
     <div>Trav<span>Express</span></div>
 </div>
 <br>
-<div class="login">
-    <input type="text" placeholder="username" name="user"><br>
-    <input type="password" placeholder="password" name="password"><br>
-    <input type="button" value="Login">
+<form class="login">
+    <input type="text" id="username-input"placeholder="username" name="user"><br>
+    <input type="password" id="password-input" placeholder="password" name="password"><br>
+    {{!-- <input type="button" value="Login"> --}}
+    <button type="submit" class="newButton">Login</button>
     <div class="footer">
         <ul class="social-network social-circle">
             <li>
@@ -25,9 +26,9 @@
             <a href="/signup">Register New User!</a>
         </div>
     </div>
-</div>
+</form>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="https://kit.fontawesome.com/a9f3433135.js" crossorigin="anonymous"></script>
 <script src="/js/login/prefixfree.min.js"></script>
-<script src="/js/login/logic.js"></script>
-<script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script>
+<script src="/js/login.js"></script>
+{{!-- <script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script> --}}

@@ -17,9 +17,9 @@
     </div>
     <div class="top-bar-right">
         <ul class="menu">
-            <li><a href="/login">My Account</a></li>
+            <li><a href="/signup">Register</a></li>
             <!-- <img src="" class="profile-header"> -->
-            <li><a href="/logout" class="button">Logout</a></li>
+            <li><a href="/login" class="button">Login</a></li>
         </ul>
     </div>
 </div>
@@ -30,7 +30,7 @@
 <div class="background">
     <div class="row">
         <div class="medium-7 large-6 columns">
-            <h1>Welcome, Adam</h1>
+            <h1>Welcome, Traveler!</h1>
             <p class="subheader">There is beauty in space, and it is
                 orderly. There is no weather, and there is regularity.
                 It is
@@ -233,16 +233,19 @@
     </div>
 
 </footer>
+{{!-- <script
+    src="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js">
+</script> --}}
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js" integrity="sha256-pRF3zifJRA9jXGv++b06qwtSqX1byFQOLjqa2PTEb2o=" crossorigin="anonymous"></script>
 
 <script src="/js/index/logic.js"></script>
 <script src="https://unpkg.com/swiper/js/swiper.min.js">
 </script>
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script
-    src="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js">
-</script>
+
+
 <script>
-        var swiper = new Swiper('.swiper-container', {
+    var swiper = new Swiper('.swiper-container', {
             effect: 'cube',
             grabCursor: true,
             cubeEffect: {
@@ -257,5 +260,5 @@
         });
 </script>
 <script>
-$(document).foundation();
+$(document).foundation( );
     </script>

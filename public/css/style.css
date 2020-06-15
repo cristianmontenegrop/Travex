@@ -175,7 +175,7 @@
 	margin-top: 10px;
 }
 
-.login input[type=button]{
+.newButton{
 	width: 260px;
 	height: 35px;
 	background: #fff;
@@ -190,14 +190,14 @@
 	margin-top: 10px;
 }
 
-.login input[type=button]:hover{
+.newButton:hover{
 	opacity: 0.8;
 	border: none;
 	background-color: #53fac8 !important;
 	color: white !important;
 }
 
-.login input[type=button]:active{
+.newButton:active{
 	opacity: 0.6;
 }
 
@@ -211,7 +211,7 @@
 	border: 1px solid rgba(255,255,255,0.9);
 }
 
-.login input[type=button]:focus{
+.newButton:focus{
 	outline: none;
 }
 

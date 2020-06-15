@@ -134,7 +134,7 @@ module.exports = function (app) {
         }
       req.json(arr)
   })
-  
+}
 //   // Google strategy
 //   app.get('/auth/google',
 //   passport.authenticate('google', { scope: 

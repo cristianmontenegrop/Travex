@@ -1,11 +1,12 @@
 const PORT = process.env.PORT || 3306;
-require('dotenv').config();
+// For some reason requireng 'dotenv' crashes server
+// require('dotenv').config();  
 
 const passport = require("passport"),
-  LocalStrategy = require("passport-local").Strategy,
-  FacebookStrategy = require("passport-facebook").Strategy,
-  GitHubStrategy = require("passport-github").Strategy,
-  GoogleStrategy = require("passport-google-oauth2").Strategy;
+  LocalStrategy = require("passport-local").Strategy;
+  // FacebookStrategy = require("passport-facebook").Strategy,
+  // GitHubStrategy = require("passport-github").Strategy,
+  // GoogleStrategy = require("passport-google-oauth2").Strategy;
 
 const db = require("../models");
 
