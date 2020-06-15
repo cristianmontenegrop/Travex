@@ -1,6 +1,8 @@
 // Requiring our models and passport as we've configured it
 const db = require("../models");
 const passport = require("../config/passport");
+const axios = require('axios'); 
+require('dotenv').config()
 
 module.exports = function (app) {
   // Using the passport.authenticate middleware with our local strategy.
@@ -32,12 +34,6 @@ module.exports = function (app) {
       });
   });
 
-  // Route for logging user out
-  app.get("/logout", (req, res) => {
-    req.logout();
-    res.redirect("/");
-  });
-
   // Route for getting some data about our user to be used client side
   app.get("/api/user_data", (req, res) => {
     if (!req.user) {
@@ -53,27 +49,93 @@ module.exports = function (app) {
     }
   });
 
-  // Cris's realm
   //AXIOS
-  const axios = require('axios');  
-  app.get("/api/things-to-do/:country:city", function(req, res) {
-    var country = req.params.country;
-    var city = req.params.city;
+  app.get("/api/user_data/:city", (req, res) => {
+  
+    var city = "seattle";
+    city = req.params.city;
+    apiKeyOTM = process.env.OTM_APIKEY
+    axiosOTM(city);
 
-    //Setup OpenTripMap axios call:
-    apiKeyOTM = "5ae2e3f221c38a28845f05b63bcb2439d3637d8dfb5b37ef5e47b686";
-    url = "https://api.opentripmap.com/0.1/en/places/geoname?name="+city+"&apikey="+apiKeyOTM+"";
-    axios.get(url)
-    .then((response)=>{
-      console.log(response)
-    })
-    .catch((error)=>{
-      console.log(error)
-    })
+      //Setup OpenTripMap axios call:
+      function axiosOTM(city){
+          // First axios call gathers latitue and longitude based on city query
+          var url = "https://api.opentripmap.com/0.1/en/places/geoname?name="+city+"&apikey="+apiKeyOTM+"";
+          axios.get(url)
+          .then((response)=>{
+          console.log(response.data.lat, response.data.lon);
+          var lat = response.data.lat;
+          var lon = response.data.lon;
+          console.log(lat);
+  
+          // Second axios call gathers features within 10KM with a rating of 2 or higher; feature id is "xid"
+          url = "https://api.opentripmap.com/0.1/en/places/radius?radius=10000&limit=5&offset=0&rate=2&format=json&lon="+lon+"&lat="+lat+"&apikey="+apiKeyOTM+"";
+          axios.get(url)
+          .then((response)=>{
+          var arr = [];
+          var nameArr =[];
+          var kindArr = [];
+          var imgArr = [];
+          var descriptionArr =[];
+          var xidArr = []
+          
+          for (var i=0; i<5; i++){
+              nameArr.push(response.data[i].name)
+              kindArr.push(response.data[i].kinds);
+              xidArr.push(response.data[i].xid)
+          }
+          url = "https://api.opentripmap.com/0.1/en/places/xid/"+xidArr[0]+"?apikey="+apiKeyOTM+"";
+  
+          // Series of axios calls searches the feature ids for a pictures and descriptions and pushes them to an array
+          axios.get(url).then((response)=>{
+              image = response.data.image;
+              description = response.data.wikipedia_extracts.text;
+              imgArr.push(image);
+              descriptionArr.push(description);
+              url = "https://api.opentripmap.com/0.1/en/places/xid/"+xidArr[1]+"?apikey="+apiKeyOTM+"";
+          axios.get(url).then((response)=>{
+              image = response.data.image;
+              description = response.data.wikipedia_extracts.text;
+              imgArr.push(image);
+              descriptionArr.push(description);
+              url = "https://api.opentripmap.com/0.1/en/places/xid/"+xidArr[2]+"?apikey="+apiKeyOTM+"";
+          axios.get(url).then((response)=>{
+              image = response.data.image;
+              description = response.data.wikipedia_extracts.text;
+              imgArr.push(image);
+              descriptionArr.push(description);
+              url = "https://api.opentripmap.com/0.1/en/places/xid/"+xidArr[3]+"?apikey="+apiKeyOTM+"";
+          axios.get(url).then((response)=>{
+              image = response.data.image;
+              description = response.data.wikipedia_extracts.text;
+              imgArr.push(image);
+              descriptionArr.push(description);
+              url = "https://api.opentripmap.com/0.1/en/places/xid/"+xidArr[4]+"?apikey="+apiKeyOTM+"";
+          axios.get(url).then((response)=>{
+              image = response.data.image;
+              description = response.data.wikipedia_extracts.text;
+              imgArr.push(image);
+              descriptionArr.push(description);
+              // push all the arrays into an object and back into a final array of objects;
+              for (var i=0; i<5; i++){
+                  var dataObj ={};
+                  dataObj['name']= nameArr[i]
+                  dataObj['kind']= kindArr[i]
+                  dataObj['image']= imgArr[i]
+                  dataObj['description']= descriptionArr[i]
+                  arr.push(dataObj);
+              }
+              console.log(arr);
+              return arr;
+          })
+          .catch((error)=>{
+          console.log(error)
+          }) }) }) }) }) }) })
+        }
+      req.json(arr)
   })
   
   // Local strategy
-
 
   // Facebook strategy
   app.get("/auth/facebook", passport.authenticate("facebook"));
