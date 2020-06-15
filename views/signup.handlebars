@@ -4,11 +4,12 @@
     <div>Trav<span>Express</span></div>
 </div>
 <br>
-<div class="login">
-    <input type="text" placeholder="first name" name="name"><br>
-    <input type="text" placeholder="last name" name="last"><br>
-    <input type="text" placeholder="username" name="user"><br>
-    <input type="password" placeholder="password" name="password"><br>
+<form class="login signup">
+    <input type="text" placeholder="first name" id="first-input" name="name">
+    <input type="text" placeholder="last name" id="last-input" name="last">
+    <input type="text" placeholder="username" id="username-input" name="user">
+    <input type="password" placeholder="password" id="password-input" name="password">
+    <button type="submit" class="btn btn-default">Sign Up</button>
     <input type="button" value="Signup">
     <div class="footer">
         <ul class="social-network social-circle">
@@ -23,10 +24,14 @@
                 <a href="/auth/facebook"><i class="fa fa-facebook"></i></a>
             </li>
         </ul>
+        <div style="display: none" id="alert" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span> <span class="msg"></span>
+        </div>
     </div>
-</div>
+</form>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="https://kit.fontawesome.com/a9f3433135.js" crossorigin="anonymous"></script>
 <script src="/js/login/prefixfree.min.js"></script>
-<script src="/js/login/logic.js"></script>
+<script src="/js/signup.js"></script>
 <script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script>

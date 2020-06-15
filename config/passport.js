@@ -4,16 +4,16 @@ const passport = require("passport"),
   LocalStrategy = require("passport-local").Strategy,
   FacebookStrategy = require("passport-facebook").Strategy,
   GitHubStrategy = require("passport-github").Strategy,
-  GoogleStrategy = require('passport-google-oauth20').Strategy
+  GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 const db = require("../models");
 
 // Telling passport we want to use a Local Strategy. In other words, we want login with a username/email and password
 passport.use(
   new LocalStrategy(
-    // Our user will sign in using an email, rather than a "username"
+    // Our user will sign in using a "username"
     {
-      usernameField: "username"
+      usernameField: "username",
     },
     (username, password, done) => {
       // When a user tries to sign in this code runs
@@ -21,17 +21,17 @@ passport.use(
         where: {
           username: username
         }
-      }).then(dbUser => {
-        // If there's no user with the given email
+      }).then((dbUser) => {
+        // If there's no user with the given username
         if (!dbUser) {
           return done(null, false, {
-            message: "Incorrect email."
+            message: "Incorrect email.",
           });
         }
-        // If there is a user with the given email, but the password the user gives us is incorrect
+        // If there is a user with the given username, but the password the user gives us is incorrect
         else if (!dbUser.validPassword(password)) {
           return done(null, false, {
-            message: "Incorrect password."
+            message: "Incorrect password.",
           });
         }
         // If none of the above, return the user
@@ -45,7 +45,7 @@ passport.use(
     {
       clientID: "2597657447149490",
       clientSecret: "a8b7528e08ae763f11783464dbe335a3",
-      callbackURL: "https://travexproject.herokuapp.com/auth/facebook/callback"
+      callbackURL: "https://travexproject.herokuapp.com/auth/facebook/callback",
       // profileFields: ['id', 'displayName', 'photos', 'email']
     },
     (accessToken, refreshToken, profile, cb) => {
@@ -60,9 +60,9 @@ passport.use(
 passport.use(
   new GitHubStrategy(
     {
-      clientID: '06fc30ed23bd12da68fe',
-      clientSecret: 'a35ed16754bf26d0307c5cd1d39176cb6874a3d8',
-      callbackURL: "http://localhost:8080/auth"
+      clientID: "06fc30ed23bd12da68fe",
+      clientSecret: "a35ed16754bf26d0307c5cd1d39176cb6874a3d8",
+      callbackURL: "http://localhost:8080/auth",
     },
     (accessToken, refreshToken, profile, cb) => {
       db.User.findOrCreate({ githubId: profile.id }, (err, user) => {
@@ -81,7 +81,7 @@ passport.use(
       clientID:
         "595606650638-04ugaq25i1gtsm3aqg74c6f4h085incb.apps.googleusercontent.com",
       clientSecret: "TUjbOyiUaFvnWvgQFeFi_a6j",
-      callbackURL: "http://localhost:8080/google/callback"
+      callbackURL: "http://localhost:8080/google/callback",
     },
     (accessToken, refreshToken, profile, cb) => {
       db.User.findOrCreate({ googleId: profile.id }, (err, user) => {

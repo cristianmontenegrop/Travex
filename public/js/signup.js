@@ -1,7 +1,7 @@
 $(document).ready(() => {
   // Getting references to our form and input
   const signUpForm = $("form.signup");
-  const emailInput = $("input#email-input");
+  const usernameInput = $("input#username-input");
   const passwordInput = $("input#password-input");
   const firstInput = $("input#first-input");
   const lastInput = $("input#last-input");
@@ -10,7 +10,7 @@ $(document).ready(() => {
   signUpForm.on("submit", event => {
     event.preventDefault();
     const userData = {
-      username: emailInput.val().trim(),
+      username: usernameInput.val().trim(),
       password: passwordInput.val().trim(),
       first: firstInput.val().trim(),
       last: lastInput.val().trim()
@@ -21,7 +21,7 @@ $(document).ready(() => {
     }
     // If we have an email and password, run the signUpUser function
     signUpUser(userData.username, userData.password, userData.first, userData.last);
-    emailInput.val("");
+    usernameInput.val("");
     passwordInput.val("");
     firstInput.val("");
     lastInput.val("");
@@ -37,7 +37,7 @@ $(document).ready(() => {
       last: last
     })
       .then(() => {
-        window.location.replace("/members");
+        window.location.replace("/userDashboard");
         // If there's an error, handle it by throwing up a bootstrap alert
       })
       .catch(handleLoginErr);
