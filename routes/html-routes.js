@@ -7,37 +7,55 @@ const passport = require('passport')
 const isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = function (app) {
+
+  // Homepage
   app.get("/", (req, res) => {
-    // If the user already has an account send them to the members page
+    // If the user already has an account send them to the their page
     if (req.user) {
-      res.redirect("/index");
+      res.redirect("/userDashboard");
     }
-    res.sendFile(path.join(__dirname, "../public/login.html"));
-  });
-  app.get("/index", (req, res) => {
-    // If the user already has an account send them to the members page
-    res.sendFile(path.join(__dirname, "../public/index.html"));
+    res.render("index", { title: "TravExpress | Explore"});
   });
 
+  // Login Page
   app.get("/login", (req, res) => {
-    // If the user already has an account send them to the members page
+    // If the user already has an account send them to the their page
     if (req.user) {
-      res.redirect("/index.html");
+      res.redirect("/userDashboard");
     }
-    res.sendFile(path.join(__dirname, "../public/login.html"));
+    res.render("login", { title: "TravExpress | Login"});
+  });
+
+  // Login Page
+  app.get("/signup", (req, res) => {
+    // If the user already has an account send them to the their page
+    if (req.user) {
+      res.redirect("/userDashboard");
+    }
+    res.render("signup", { title: "TravExpress | Signup"});
+  });
+
+  // Logout Page
+  app.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("/");
   });
 
   // Here we've add our isAuthenticated middleware to this route.
   // If a user who is not logged in tries to access this route they will be redirected to the signup page
-  app.get("/index", isAuthenticated, (req, res) => {
-    res.sendFile(path.join(__dirname, "../public/index.html"));
+  app.get("/userDashboard", isAuthenticated, (req, res) => {
+    res.render("userDashboard", { title: "TravExpress | Explore"});
   });
 
   app.get('/auth/github', passport.authenticate('github'))
   app.get('/auth', passport.authenticate('github', {
-    successRedirect: '/index',
+    successRedirect: '/userDashboard',
     failureRedirect: '/failed'
   }))
+
+  app.get("/failed", (req, res) => {
+    res.render("failed");
+  });
 
   app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
   app.get('/google/callback', passport.authenticate('google', { failureRedirect: '/failed' }),
@@ -45,51 +63,3 @@ module.exports = function (app) {
       res.redirect('/')
     })
 };
-// ===================================================
-// ===================================================
-// Need Routes for setting up API calls from the database
-// ===================================================
-// ===================================================
-
-// Wikipedia
-// ==================================================
-
-// Unsplash Pictures
-// ==================================================
-//   let country;
-//   pictureArray = [];
-
-//   function upSplashAJAX(country) {
-//     const picURL =
-//       "https://api.unsplash.com/search/photos?client_id=l_ucLpuaVqeosGc7xD0pKg6Ib61kn737l_M3-nkFmZY&query=" +
-//       country;
-//     $.ajax({
-//       url: picURL,
-//       method: "GET"
-//     }).then(results => {
-//       const countryPic = results.results[0].urls.small;
-//       pictureArray.push(countryPic);
-//     });
-//   }
-
-//   app.get("/members/:id", (req, res) => {
-//     //get
-//     db.activities
-//       .findOne({
-//         where: {
-//           // eslint-disable-next-line camelcase
-//           User_id: req.params.id
-//         }
-//       })
-//       .then(dbactivities => {
-//         console.log(res.json(dbactivities));
-//         country = res.json(dbactivities.country);
-//         upSplashAJAX(country);
-//       });
-//   });
-// };
-// Exchange rate calculator
-// ==================================================
-
-// Open Trip Map
-// ==================================================
