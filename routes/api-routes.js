@@ -135,17 +135,28 @@ module.exports = function (app) {
       req.json(arr)
   })
   
-  // Local strategy
+//   // Google strategy
+//   app.get('/auth/google',
+//   passport.authenticate('google', { scope: 
+//       [ 'https://www.googleapis.com/auth/plus.login',
+//       , 'https://www.googleapis.com/auth/plus.profile.emails.read' ] }
+// ));
 
-  // Facebook strategy
-  app.get("/auth/facebook", passport.authenticate("facebook"));
+//   app.get( '/auth/google/callback', 
+//       passport.authenticate( 'google', { 
+//           successRedirect: '/auth/google/success',
+//           failureRedirect: '/auth/google/failure'
+//   }));
 
-  app.get(
-    "/auth/facebook/callback",
-    passport.authenticate("facebook", {
-      successRedirect: "/",
-      failureRedirect: "/login"
-    })
-  );
-  // 
-};
+//   // Facebook strategy
+//   app.get("/auth/facebook", passport.authenticate("facebook"));
+
+//   app.get(
+//     "/auth/facebook/callback",
+//     passport.authenticate("facebook", {
+//       successRedirect: "/userDashboard",
+//       failureRedirect: "/login"
+//     })
+//   );
+//   // 
+// };
