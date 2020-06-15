@@ -34,22 +34,13 @@ module.exports = function (app) {
     }
     res.render("signup", { title: "TravExpress | Signup"});
   });
-};
-// ===================================================
-// ===================================================
-// Need Routes for setting up API calls from the database
-// ===================================================
-// ===================================================
 
-<<<<<<< HEAD
-// Wikipedia
-// ==================================================
+  // ===================================================
+  // ===================================================
+  // Need Routes for setting up API calls from the database
+  // ===================================================
+  // ===================================================
 
-// Unsplash Pictures
-// ==================================================
-//   let country;
-//   pictureArray = [];
-=======
   // Logout Page
   app.get("/logout", (req, res) => {
     req.logout();
@@ -61,7 +52,6 @@ module.exports = function (app) {
   app.get("/userDashboard", isAuthenticated, (req, res) => {
     res.render("userDashboard", { title: "TravExpress | Explore"});
   });
->>>>>>> develop
 
   app.get('/auth/github', passport.authenticate('github'))
   app.get('/auth', passport.authenticate('github', {

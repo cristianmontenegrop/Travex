@@ -132,7 +132,7 @@ module.exports = function (app) {
           console.log(error)
           }) }) }) }) }) }) })
         }
-      req.json(arr)
+      res.json(arr)
   })
 
   //   // Google strategy

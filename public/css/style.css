@@ -99,7 +99,7 @@
 	background-image: url(../../assets/silhouette-photo-of-man-throw-paper-plane-1262304.jpg);
 	background-position: center top;
 	background-size:cover;
-	-webkit-filter: blur(5px);
+	filter: blur(5px);
 	z-index: 0;
 }
 
