@@ -51,7 +51,7 @@ passport.use(
       profileFields: ["id", "displayName", "name", "photos", "email"]
     },
     (accessToken, refreshToken, profile, cb) => {
-      console.log(profile);
+      // console.log(profile);
       db.User.findOrCreate({
         where: { facebookId: profile.id },
         defaults: {
@@ -62,7 +62,7 @@ passport.use(
           password: "facebookId"
         }
       }).then(user => {
-        console.log(user);
+        // console.log(user);
         return cb(null, user);
       });
     }
