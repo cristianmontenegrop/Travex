@@ -14,7 +14,7 @@ module.exports = function (app) {
     if (req.user) {
       res.redirect("/userDashboard");
     }
-    res.render("index", { title: "TravExpress | Explore"});
+    res.render("index", { title: "TravExpress | Explore" });
   });
 
   // Login Page
@@ -23,7 +23,7 @@ module.exports = function (app) {
     if (req.user) {
       res.redirect("/userDashboard");
     }
-    res.render("login", { title: "TravExpress | Login"});
+    res.render("login", { title: "TravExpress | Login" });
   });
 
   // Login Page
@@ -32,7 +32,7 @@ module.exports = function (app) {
     if (req.user) {
       res.redirect("/userDashboard");
     }
-    res.render("signup", { title: "TravExpress | Signup"});
+    res.render("signup", { title: "TravExpress | Signup" });
   });
 
   // ===================================================
@@ -50,22 +50,57 @@ module.exports = function (app) {
   // Here we've add our isAuthenticated middleware to this route.
   // If a user who is not logged in tries to access this route they will be redirected to the signup page
   app.get("/userDashboard", isAuthenticated, (req, res) => {
-    res.render("userDashboard", { title: "TravExpress | Explore"});
+    res.render("userDashboard", { title: "TravExpress | Explore" });
   });
-
-  app.get('/auth/github', passport.authenticate('github'))
-  app.get('/auth', passport.authenticate('github', {
-    successRedirect: '/userDashboard',
-    failureRedirect: '/failed'
-  }))
 
   app.get("/failed", (req, res) => {
     res.render("failed");
   });
 
-  app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
-  app.get('/google/callback', passport.authenticate('google', { failureRedirect: '/failed' }),
+  // FACEBOOK API
+  app.get("/auth/facebook", passport.authenticate("facebook"));
+
+  app.get("/facebook/callback",
+    passport.authenticate("facebook", { failureRedirect: "/login" }),
     (req, res) => {
-      res.redirect('/')
-    })
+      // console.log("req:", req);
+      // console.log("res: ", res);
+      res.json(req.user);
+      res.redirect("/");
+    }
+  );
+
+  // GITHUB API
+  app.get("/auth/github", passport.authenticate("github"));
+
+  app.get(
+    "/github/callback",
+    passport.authenticate("github", { failureRedirect: "/login" }),
+    (req, res) => {
+      // console.log("req:", req.user);
+      // console.log("res: ", res);
+      res.redirect("/");
+    }
+  );
+
+  // GOOGLE API
+  app.get(
+    "/auth/google",
+    passport.authenticate("google", { scope: ["profile"] })
+  );
+  app.get(
+    "/google/callback",
+    passport.authenticate("google", { failureRedirect: "/login" }),
+    (req, res) => {
+      // console.log("req:", req);
+      // console.log("res: ", res);
+      res.redirect("/");
+    }
+  );
+  app.get('/profile',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+      // console.log(req.user)
+      res.render('profile', { user: req.user });
+    });
 };
