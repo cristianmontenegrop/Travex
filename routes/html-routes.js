@@ -1,13 +1,12 @@
 // Requiring path to so we can use relative routes to our HTML files
 const path = require("path");
 const db = require("../models");
-const passport = require('passport')
+const passport = require("passport")
 
 // Requiring our custom middleware for checking if a user is logged in
 const isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = function (app) {
-
   // Homepage
   app.get("/", (req, res) => {
     // If the user already has an account send them to the their page
@@ -72,7 +71,6 @@ module.exports = function (app) {
 
   // GITHUB API
   app.get("/auth/github", passport.authenticate("github"));
-
   app.get(
     "/github/callback",
     passport.authenticate("github", { failureRedirect: "/login" }),
@@ -97,10 +95,12 @@ module.exports = function (app) {
       res.redirect("/");
     }
   );
-  app.get('/profile',
-    require('connect-ensure-login').ensureLoggedIn(),
-    function (req, res) {
+
+  app.get("/profile",
+    require("connect-ensure-login").ensureLoggedIn(),
+    (req, res) => {
       // console.log(req.user)
-      res.render('profile', { user: req.user });
-    });
+      res.render("profile", { user: req.user });
+    }
+  );
 };
