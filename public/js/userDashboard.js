@@ -1,23 +1,24 @@
 $(document).ready(() => {
-  // This file just does a GET request to figure out which user is logged in
-  // and updates the HTML on the page
-  $.get("/api/user_data").then(data => {
-    $(".username").text("Welcome, " + data.username + "!");
-  });
+    // This file just does a GET request to figure out which user is logged in
+    // and updates the HTML on the page
+    $.get("/api/user_data").then(data => {
+        console.log(data);
+        $(".username").text("Welcome, " + data.username + "!");
+    });
 });
 
 $(document).load(() => {
-  if ($('.country-search').val() !== '' || $('.country-search').val() !== null && $('.city-search').val() !== '' || $('.city-search').val() !== null) {
-      var country = $('.city-search').val().replace(/\s+/g, '-').toLowerCase();
-      var city = $('.city-search').val().replace(/\s+/g, '-').toLowerCase();
-      $('/api/things-to-do/' + country + '/' + city, trips_data => {
-          if (trips_data) {
-              $('/api/pictures/' + city, pictures_data => {
-                  let i = 0;
-                  while (i < trips_data.length - 1) {
-                      trip_data.map(item => {
-                          document.querySelector('.container-grid').innerHTML +=
-                              `
+    if ($('.country-search').val() !== '' || $('.country-search').val() !== null && $('.city-search').val() !== '' || $('.city-search').val() !== null) {
+        var country = $('.city-search').val().replace(/\s+/g, '-').toLowerCase();
+        var city = $('.city-search').val().replace(/\s+/g, '-').toLowerCase();
+        $('/api/things-to-do/' + country + '/' + city, trips_data => {
+            if (trips_data) {
+                $('/api/pictures/' + city, pictures_data => {
+                    let i = 0;
+                    while (i < trips_data.length - 1) {
+                        trip_data.map(item => {
+                            document.querySelector('.container-grid').innerHTML +=
+                                `
                           <div class="box">
                               <div class="post-module">
                               <div class="thumbnail">
@@ -36,16 +37,16 @@ $(document).load(() => {
                               </div>
                           </div>
                       `
-                      })
-                      i++
-                  }
-              })
-          }
-          else {
-              document.querySelector('.container-grid').innerHTML = 'We do not service this city at the moment. Please try again later. '
-          }
-      })
-  }
+                        })
+                        i++
+                    }
+                })
+            }
+            else {
+                document.querySelector('.container-grid').innerHTML = 'We do not service this city at the moment. Please try again later. '
+            }
+        })
+    }
 })
 
 function myFunction() {

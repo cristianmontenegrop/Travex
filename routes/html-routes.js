@@ -64,7 +64,7 @@ module.exports = function (app) {
     (req, res) => {
       console.log("req:", req.user[0].dataValues);
       // console.log("res: ", res);
-      res.render("index", { user: req.user[0].dataValues });
+      res.render("userDashboard", { username: req.user[0].dataValues });
     }
   );
 
@@ -76,7 +76,7 @@ module.exports = function (app) {
     (req, res) => {
       console.log("req:", req.user[0].dataValues);
       // console.log("res: ", res);
-      res.render("index", { user: req.user[0].dataValues });
+      res.render("userDashboard", { username: req.user[0].dataValues });
     }
   );
 
@@ -91,7 +91,7 @@ module.exports = function (app) {
     (req, res) => {
       console.log("req:", req.user[0].dataValues);
       // console.log("res: ", res);
-      res.render("index", { user: req.user[0].dataValues });
+      res.render("userDashboard", { username: req.user[0].dataValues });
     }
   );
 
