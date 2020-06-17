@@ -34,6 +34,24 @@ module.exports = function (app) {
       });
   });
 
+  app.post("/api/activities", (req, res) => {
+    console.log(req.body);
+
+
+    db.activities.create(req.body)
+
+      .then((res) => {
+        res.json({"hello":"hello"});
+        // res.redirect(307, "/api/login");
+
+
+      })
+      .catch(err => {
+        res.status(401).json(err);
+      });
+
+  });
+
   // Route for getting some data about our user to be used client side
   app.get("/api/user_data", (req, res) => {
     console.log()
