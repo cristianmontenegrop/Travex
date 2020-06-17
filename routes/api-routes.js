@@ -14,7 +14,53 @@ module.exports = function (app) {
       username: req.user.username,
       id: req.user.id
     });
+    // const username = req.user.username;
+    // console.log("USERNAME:", username);
+    // res.render("login", { username: "cristian" });
   });
+
+  // FACEBOOK API
+  app.get("/auth/facebook", passport.authenticate("facebook"));
+
+  app.get("/facebook/callback",
+    passport.authenticate("facebook", { failureRedirect: "/failed" }),
+    (req, res) => {
+      res.render("userDashboard");
+    }
+  );
+
+  // GITHUB API
+  app.get("/auth/github", passport.authenticate("github"));
+
+  app.get(
+    "/github/callback",
+    passport.authenticate("github", { failureRedirect: "/failed" }),
+    (req, res) => {
+      res.render("userDashboard");
+    }
+  );
+
+  // GOOGLE API
+  app.get(
+    "/auth/google",
+    passport.authenticate("google", { scope: ["profile"] })
+  );
+
+  app.get(
+    "/google/callback",
+    passport.authenticate("google", { failureRedirect: "/failed" }),
+    (req, res) => {
+      res.render("userDashboard");
+    }
+  );
+
+  // app.get("/profile",
+  //   require("connect-ensure-login").ensureLoggedIn(),
+  //   (req, res) => {
+  //     // console.log(req.user)
+  //     res.render("profile", { user: req.user[0].dataValues });
+  //   }
+  // );
 
   // Route for signing up a user. The user's password is automatically hashed and stored securely thanks to
   // how we configured our Sequelize User Model. If the user is created successfully, proceed to log the user in,
@@ -36,8 +82,9 @@ module.exports = function (app) {
 
   // Route for getting some data about our user to be used client side
   app.get("/api/user_data", (req, res) => {
-    console.log()
+    console.log("USER IN API/USER_DATA", req.user);
     if (!req.user) {
+      console.log("NOT FOUND REQ.USER");
       // The user is not logged in, send back an empty object
       res.json({});
     } else {
@@ -45,10 +92,31 @@ module.exports = function (app) {
       // Sending back a password, even a hashed password, isn't a good idea
       res.json({
         username: req.user.username,
-        id: req.user.id
+        id: req.user.id,
+        first: req.user.first,
+        last: req.user.last
       });
     }
   });
+
+  // app.get("/api/user_data",
+  //   require("connect-ensure-login").ensureLoggedIn(),
+  //   (req, res) => {
+  //     console.log("req:", req);
+
+  //     if (!req.user) {
+  //       // The user is not logged in, send back an empty object
+  //       res.json({});
+  //     } else {
+  //       // Otherwise send back the user's username and id
+  //       // Sending back a password, even a hashed password, isn't a good idea
+  //       res.json({
+  //         username: req.user.username,
+  //         id: req.user.id
+  //       });
+  //     }
+  //   }
+  // );
 
   //AXIOS
   app.get("/api/user_data/:city", (req, res) => {
@@ -142,30 +210,7 @@ module.exports = function (app) {
     res.json(arr)
   })
 
-  //   // Google strategy
-  //   app.get('/auth/google',
-  //   passport.authenticate('google', { scope: 
-  //       [ 'https://www.googleapis.com/auth/plus.login',
-  //       , 'https://www.googleapis.com/auth/plus.profile.emails.read' ] }
-  // ));
 
-  //   app.get( '/auth/google/callback', 
-  //       passport.authenticate( 'google', { 
-  //           successRedirect: '/auth/google/success',
-  //           failureRedirect: '/auth/google/failure'
-  //   }));
-
-  //   // Facebook strategy
-  //   app.get("/auth/facebook", passport.authenticate("facebook"));
-
-  // app.get(
-  //   "/auth/facebook/callback",
-  //   passport.authenticate("facebook", {
-  //     successRedirect: "/",
-  //     failureRedirect: "/login"
-  //   })
-  // );
-  // 
 
   // AXIOS
   // ======================================================================

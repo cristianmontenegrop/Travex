@@ -1,7 +1,5 @@
-
 <!-- Navigation -->
-<div class="title-bar" data-responsive-toggle="realEstateMenu"
-    data-hide-for="small">
+<div class="title-bar" data-responsive-toggle="realEstateMenu" data-hide-for="small">
     <button class="menu-icon" type="button" data-toggle></button>
     <div class="title-bar-title">Menu</div>
 </div>
@@ -30,7 +28,10 @@
 <div class="background">
     <div class="row">
         <div class="medium-7 large-6 columns">
-            <h1 class="username"></h1>
+            <h1 class="username">
+                {{!-- Hello {{username}}! --}}
+            </h1>
+
             <p class="subheader">There is beauty in space, and it is
                 orderly. There is no weather, and there is regularity.
                 It is
@@ -70,15 +71,12 @@
                     <div class="row">
                         <div class="small-12 columns">
                             <label>Country
-                                <input type="text"
-                                    class='country-search'
-                                    placeholder="Country">
+                                <input type="text" class='country-search' placeholder="Country">
                             </label>
                         </div>
                         <div class="small-12 columns">
                             <label>City
-                                <input type="text" class='city-search'
-                                    placeholder="City
+                                <input type="text" class='city-search' placeholder="City
                                     required">
                             </label>
                             <button type="submit" class="button">Search
@@ -101,11 +99,10 @@
 </div>
 
 <div class="row small-up-1 medium-up-2 large-up-3 container-grid">
-     <div class="column">
+    <div class="column">
         <div class="callout">
             <p>Pegasi B</p>
-            <p><img src="https://placehold.it/400x370&text=Pegasi B"
-                    alt="image of a planet called Pegasi B"></p>
+            <p><img src="https://placehold.it/400x370&text=Pegasi B" alt="image of a planet called Pegasi B"></p>
             <p class="lead">Copernican Revolution caused an uproar</p>
             <p class="subheader">Find Earth-like planets life outside
                 the Solar System</p>
@@ -114,8 +111,7 @@
     <div class="column">
         <div class="callout">
             <p>Pegasi B</p>
-            <p><img src="https://placehold.it/400x370&text=Pegasi B"
-                    alt="image of a planet called Pegasi B"></p>
+            <p><img src="https://placehold.it/400x370&text=Pegasi B" alt="image of a planet called Pegasi B"></p>
             <p class="lead">Copernican Revolution caused an uproar</p>
             <p class="subheader">Find Earth-like planets life outside
                 the Solar System</p>
@@ -124,8 +120,7 @@
     <div class="column">
         <div class="callout">
             <p>Pegasi B</p>
-            <p><img src="https://placehold.it/400x370&text=Pegasi B"
-                    alt="image of a planet called Pegasi B"></p>
+            <p><img src="https://placehold.it/400x370&text=Pegasi B" alt="image of a planet called Pegasi B"></p>
             <p class="lead">Copernican Revolution caused an uproar</p>
             <p class="subheader">Find Earth-like planets life outside
                 the Solar System</p>
@@ -134,8 +129,7 @@
     <div class="column">
         <div class="callout">
             <p>Pegasi B</p>
-            <p><img src="https://placehold.it/400x370&text=Pegasi B"
-                    alt="image of a planet called Pegasi B"></p>
+            <p><img src="https://placehold.it/400x370&text=Pegasi B" alt="image of a planet called Pegasi B"></p>
             <p class="lead">Copernican Revolution caused an uproar</p>
             <p class="subheader">Find Earth-like planets life outside
                 the Solar System</p>
@@ -144,8 +138,7 @@
     <div class="column">
         <div class="callout">
             <p>Pegasi B</p>
-            <p><img src="https://placehold.it/400x370&text=Pegasi B"
-                    alt="image of a planet called Pegasi B"></p>
+            <p><img src="https://placehold.it/400x370&text=Pegasi B" alt="image of a planet called Pegasi B"></p>
             <p class="lead">Copernican Revolution caused an uproar</p>
             <p class="subheader">Find Earth-like planets life outside
                 the Solar System</p>
@@ -154,8 +147,7 @@
     <div class="column">
         <div class="callout">
             <p>Pegasi B</p>
-            <p><img src="https://placehold.it/400x370&text=Pegasi B"
-                    alt="image of a planet called Pegasi B"></p>
+            <p><img src="https://placehold.it/400x370&text=Pegasi B" alt="image of a planet called Pegasi B"></p>
             <p class="lead">Copernican Revolution caused an uproar</p>
             <p class="subheader">Find Earth-like planets life outside
                 the Solar System</p>
@@ -235,27 +227,28 @@
 </footer>
 
 <script src="https://code.jquery.com/jquery.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js" integrity="sha256-pRF3zifJRA9jXGv++b06qwtSqX1byFQOLjqa2PTEb2o=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js"
+    integrity="sha256-pRF3zifJRA9jXGv++b06qwtSqX1byFQOLjqa2PTEb2o=" crossorigin="anonymous"></script>
 
 <script src="/js/userDashboard.js"></script>
 <script src="https://unpkg.com/swiper/js/swiper.min.js">
 </script>
 <script>
-$(document).foundation( );
-    </script>
+    $(document).foundation();
+</script>
 
 <script>
     var swiper = new Swiper('.swiper-container', {
-            effect: 'cube',
-            grabCursor: true,
-            cubeEffect: {
+        effect: 'cube',
+        grabCursor: true,
+        cubeEffect: {
             shadow: true,
             slideShadows: true,
             shadowOffset: 20,
             shadowScale: 0.94,
-            },
-            pagination: {
+        },
+        pagination: {
             el: '.swiper-pagination',
-            },
-        });
+        },
+    });
 </script>

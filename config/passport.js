@@ -41,6 +41,7 @@ passport.use(
     }
   )
 );
+
 passport.use(
   new FacebookStrategy(
     {
@@ -51,7 +52,8 @@ passport.use(
       profileFields: ["id", "displayName", "name", "photos", "email"]
     },
     (accessToken, refreshToken, profile, cb) => {
-      // console.log(profile);
+      console.log(profile);
+      console.log(profile.displayName);
       db.User.findOrCreate({
         where: { facebookId: profile.id },
         defaults: {
@@ -62,8 +64,7 @@ passport.use(
           password: "facebookId"
         }
       }).then(user => {
-        // console.log(user);
-        return cb(null, user);
+        return cb(null, user[0]);
       });
     }
   )
@@ -78,7 +79,6 @@ passport.use(
       callbackURL: "http://localhost:8080/github/callback"
     },
     (accessToken, refreshToken, profile, cb) => {
-      // console.log(profile);
       db.User.findOrCreate({
         where: { githubId: profile.id },
         defaults: {
@@ -89,8 +89,7 @@ passport.use(
           password: "githubId"
         }
       }).then(user => {
-        // console.log(user);
-        return cb(null, user);
+        return cb(null, user[0]);
       });
     }
   )
@@ -115,9 +114,7 @@ passport.use(
           password: "googleId"
         }
       }).then(user => {
-        // console.log("profile:", user);
-        // console.log("user:", user);
-        return cb(null, user);
+        return cb(null, user[0]);
       });
     }
   )
@@ -128,28 +125,13 @@ passport.use(
 // Just consider this part boilerplate needed to make it all work
 passport.serializeUser((user, cb) => {
   console.log("serializeUser");
-  // console.log(user);
   cb(null, user);
 });
 
-// passport.serializeUser((user, done) => {
-//   console.log("serializing user: ", user.id);
-//   done(null, user.id);
-// });
-
 passport.deserializeUser((obj, cb) => {
   console.log("deserializeUser");
-  // console.log(user);
   cb(null, obj);
 });
-
-// passport.deserializeUser((id, done) => {
-//   db.User.findById(id)
-//     .then(user => {
-//       done(null, user);
-//     })
-//     .catch(done);
-// });
 
 // Exporting our configured passport
 module.exports = passport;
