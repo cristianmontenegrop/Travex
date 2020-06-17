@@ -46,8 +46,8 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_CLIENT,
       clientSecret: process.env.FACEBOOK_SECRET,
-      callbackURL: "https://travexproject.herokuapp.com/facebook/callback",
-      // callbackURL: "http://localhost:" + PORT + "/facebook/callback",
+      // callbackURL: "https://travexproject.herokuapp.com/facebook/callback",
+      callbackURL: "http://localhost:" + PORT + "/facebook/callback",
       profileFields: ["id", "displayName", "name", "photos", "email"]
     },
     (accessToken, refreshToken, profile, cb) => {
@@ -74,8 +74,8 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT,
       clientSecret: process.env.GITHUB_SECRET,
-      callbackURL: "https://travexproject.herokuapp.com/github/callback"
-      // callbackURL: "http://localhost:8080/github/callback"
+      // callbackURL: "https://travexproject.herokuapp.com/github/callback"
+      callbackURL: "http://localhost:8080/github/callback"
     },
     (accessToken, refreshToken, profile, cb) => {
       // console.log(profile);
@@ -101,8 +101,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT,
       clientSecret: process.env.GOOGLE_SECRET,
-      callbackURL: "https://travexproject.herokuapp.com/google/callback"
-      // callbackURL: "http://localhost:" + PORT + "/google/callback"
+      // callbackURL: "https://travexproject.herokuapp.com/google/callback"
+      callbackURL: "http://localhost:" + PORT + "/google/callback"
     },
     (accessToken, refreshToken, profile, cb) => {
       db.User.findOrCreate({

@@ -1,17 +1,17 @@
 require('dotenv').config();
 module.exports = {
   "development": {
-    "username": "root",
-    "password": process.env.MYSQL_PASSWORD,
-    "database": "passport_demo",
-    "host": "127.0.0.1",
+    "username": process.env.DMYSQL_USER,
+    "password": process.env.DMYSQL_PASSWORD,
+    "database": process.env.DMYSQL_DATABASE,
+    "host": process.env.DMYSQL_HOST,
     "dialect": "mysql"
   },
   "test": {
-    "username": "o2m1feax5jdm5qgc",
-    "password": "sve6g57elfwpezzr",
-    "database": "m4k9szrmlhvoxnvl",
-    "host": "arfo8ynm6olw6vpn.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    "username": process.env.TMYSQL_USER,
+    "password": process.env.TMYSQL_PASSWORD,
+    "database": process.env.TMYSQL_DATABASE,
+    "host": process.env.TMYSQL_HOST,
     "dialect": "mysql"
   },
   "production": {

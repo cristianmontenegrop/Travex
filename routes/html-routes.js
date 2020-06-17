@@ -11,7 +11,7 @@ module.exports = function (app) {
   app.get("/", (req, res) => {
     // If the user already has an account send them to the their page
     if (req.user) {
-      res.redirect("/userDashboard");
+      res.render("userDashboard");
     }
     res.render("index", { title: "TravExpress | Explore" });
   });
@@ -20,7 +20,7 @@ module.exports = function (app) {
   app.get("/login", (req, res) => {
     // If the user already has an account send them to the their page
     if (req.user) {
-      res.redirect("/userDashboard");
+      res.render("userDashboard");
     }
     res.render("login", { title: "TravExpress | Login" });
   });
@@ -29,7 +29,7 @@ module.exports = function (app) {
   app.get("/signup", (req, res) => {
     // If the user already has an account send them to the their page
     if (req.user) {
-      res.redirect("/userDashboard");
+      res.render("userDashboard");
     }
     res.render("signup", { title: "TravExpress | Signup" });
   });
@@ -43,7 +43,7 @@ module.exports = function (app) {
   // Logout Page
   app.get("/logout", (req, res) => {
     req.logout();
-    res.redirect("/");
+    res.render("index");
   });
 
   // Here we've add our isAuthenticated middleware to this route.
@@ -60,12 +60,11 @@ module.exports = function (app) {
   app.get("/auth/facebook", passport.authenticate("facebook"));
 
   app.get("/facebook/callback",
-    passport.authenticate("facebook", { failureRedirect: "/login" }),
+    passport.authenticate("facebook", { failureRedirect: "/failed" }),
     (req, res) => {
-      // console.log("req:", req);
+      console.log("req:", req.user[0].dataValues);
       // console.log("res: ", res);
-      res.json(req.user);
-      res.redirect("/");
+      res.render("index", { user: req.user[0].dataValues });
     }
   );
 
@@ -73,11 +72,11 @@ module.exports = function (app) {
   app.get("/auth/github", passport.authenticate("github"));
   app.get(
     "/github/callback",
-    passport.authenticate("github", { failureRedirect: "/login" }),
+    passport.authenticate("github", { failureRedirect: "/failed" }),
     (req, res) => {
-      // console.log("req:", req.user);
+      console.log("req:", req.user[0].dataValues);
       // console.log("res: ", res);
-      res.redirect("/");
+      res.render("index", { user: req.user[0].dataValues });
     }
   );
 
@@ -88,11 +87,11 @@ module.exports = function (app) {
   );
   app.get(
     "/google/callback",
-    passport.authenticate("google", { failureRedirect: "/login" }),
+    passport.authenticate("google", { failureRedirect: "/failed" }),
     (req, res) => {
-      // console.log("req:", req);
+      console.log("req:", req.user[0].dataValues);
       // console.log("res: ", res);
-      res.redirect("/");
+      res.render("index", { user: req.user[0].dataValues });
     }
   );
 
@@ -100,7 +99,7 @@ module.exports = function (app) {
     require("connect-ensure-login").ensureLoggedIn(),
     (req, res) => {
       // console.log(req.user)
-      res.render("profile", { user: req.user });
+      res.render("profile", { user: req.user[0].dataValues });
     }
   );
 };
