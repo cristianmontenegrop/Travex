@@ -56,10 +56,10 @@ module.exports = function (app) {
     var city = "seattle";
     city = req.params.city;
     apiKeyOTM = process.env.OTM_APIKEY
-    axiosOTM(city);
+    // axiosOTM(city);
 
     //Setup OpenTripMap axios call:
-    function axiosOTM(city) {
+    // function axiosOTM(city) {
       // First axios call gathers latitue and longitude based on city query
       var url = "https://api.opentripmap.com/0.1/en/places/geoname?name=" + city + "&apikey=" + apiKeyOTM + "";
       axios.get(url)
@@ -67,7 +67,6 @@ module.exports = function (app) {
           console.log(response.data.lat, response.data.lon);
           var lat = response.data.lat;
           var lon = response.data.lon;
-          console.log(lat);
 
           // Second axios call gathers features within 10KM with a rating of 2 or higher; feature id is "xid"
           url = "https://api.opentripmap.com/0.1/en/places/radius?radius=10000&limit=5&offset=0&rate=2&format=json&lon=" + lon + "&lat=" + lat + "&apikey=" + apiKeyOTM + "";
@@ -101,6 +100,7 @@ module.exports = function (app) {
                   descriptionArr.push(description);
                   url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[2] + "?apikey=" + apiKeyOTM + "";
                   axios.get(url).then((response) => {
+
                     image = response.data.image;
                     description = response.data.wikipedia_extracts.text;
                     imgArr.push(image);
@@ -113,6 +113,8 @@ module.exports = function (app) {
                       descriptionArr.push(description);
                       url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[4] + "?apikey=" + apiKeyOTM + "";
                       axios.get(url).then((response) => {
+                        console.log("this is where we are")
+                        console.log(response.data);
                         image = response.data.image;
                         description = response.data.wikipedia_extracts.text;
                         imgArr.push(image);
@@ -127,7 +129,8 @@ module.exports = function (app) {
                           arr.push(dataObj);
                         }
                         console.log(arr);
-                        return arr;
+                        res.json(arr);
+        //                 // return arr;
                       })
                         .catch((error) => {
                           console.log(error)
@@ -137,9 +140,11 @@ module.exports = function (app) {
                 })
               })
             })
-        })
-    }
-    res.json(arr)
+        }).catch((error) => {
+           console.log(error)
+        });
+    // }
+    // res.json({"hello":"hello"})
   })
 
   //   // Google strategy
