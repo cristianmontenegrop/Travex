@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     Country: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true,
     },
     City: {
         type: DataTypes.STRING,

@@ -71,7 +71,6 @@ module.exports = function (app) {
   //AXIOS
   app.get("/api/user_data/:city", (req, res) => {
 
-    var city = "seattle";
     city = req.params.city;
     apiKeyOTM = process.env.OTM_APIKEY
     // axiosOTM(city);
@@ -106,26 +105,27 @@ module.exports = function (app) {
 
               // Series of axios calls searches the feature ids for a pictures and descriptions and pushes them to an array
               axios.get(url).then((response) => {
-                image = response.data.image;
+                console.log(response.data);
+                image = response.data.preview.source;
                 description = response.data.wikipedia_extracts.text;
                 imgArr.push(image);
                 descriptionArr.push(description);
                 url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[1] + "?apikey=" + apiKeyOTM + "";
                 axios.get(url).then((response) => {
-                  image = response.data.image;
+                  image = response.data.preview.source;
                   description = response.data.wikipedia_extracts.text;
                   imgArr.push(image);
                   descriptionArr.push(description);
                   url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[2] + "?apikey=" + apiKeyOTM + "";
                   axios.get(url).then((response) => {
 
-                    image = response.data.image;
+                    image = response.data.preview.source;
                     description = response.data.wikipedia_extracts.text;
                     imgArr.push(image);
                     descriptionArr.push(description);
                     url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[3] + "?apikey=" + apiKeyOTM + "";
                     axios.get(url).then((response) => {
-                      image = response.data.image;
+                      image = response.data.preview.source;
                       description = response.data.wikipedia_extracts.text;
                       imgArr.push(image);
                       descriptionArr.push(description);
@@ -133,7 +133,7 @@ module.exports = function (app) {
                       axios.get(url).then((response) => {
                         console.log("this is where we are")
                         console.log(response.data);
-                        image = response.data.image;
+                        image = response.data.preview.source;
                         description = response.data.wikipedia_extracts.text;
                         imgArr.push(image);
                         descriptionArr.push(description);
