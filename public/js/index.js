@@ -11,7 +11,7 @@ $(document).ready(() => {
         console.log("click")
         const search = {
           city: cityInput.val().trim(),
-          country: countryInput.val().trim()
+        //   country: countryInput.val().trim()
         };
     
         if (!search.city) {
@@ -33,8 +33,9 @@ $(document).ready(() => {
         //   }
     
       function getCitySearch(city) {
-        $.get("/api/user_data/:city", function(data) {
+        $.get("/api/user_data/"+city, function(data) {
             console.log(data);
+            document.querySelector('.container-grid').innerHTML = "";
             data.map(item => {
                 document.querySelector('.container-grid').innerHTML +=
                 `<div class="box">

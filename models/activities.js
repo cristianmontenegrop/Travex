@@ -7,35 +7,22 @@ module.exports = function(sequelize, DataTypes) {
     // The email cannot be null, and must be a proper email before creation
     User_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    Trip_ID: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true
     },
     Country: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     City: {
-        type: DataTypes.STRING,
-         allowNull: false
+      type: DataTypes.STRING,
+      allowNull: true
     },
-    Activity_1: {
-        type: DataTypes.STRING,
-        allowNull: false
+    ImageURL: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
-    Activity_2: {
-        type: DataTypes.STRING,
-    },
-    Activity_3: {
-        type: DataTypes.STRING,
-    },
-    Activity_4: {
-        type: DataTypes.STRING,
-    },
-      Activity_5: {
-        type: DataTypes.STRING,
+    Description: {
+      type: DataTypes.STRING,
     }
   });
 

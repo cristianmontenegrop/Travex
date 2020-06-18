@@ -2,19 +2,8 @@ let i = 0
 const citySearch = $("form.searchNow");
 const cityInput = $("input.city-search")
 const countryInput = $("input.country-search")
-
-// $(document).ready(() => {
-//     // This file just does a GET request to figure out which user is logged in
-//     // and updates the HTML on the page
-//     $.get("/api/user_data").then(data => {
-//         console.log(data);
-//         $(".username").text("Welcome, " + data.username + "!");
-//     });
-// });
-
-
-
-
+var userData= {};
+var globalData= {};
 
 $(document).ready(() => {
 
@@ -22,6 +11,7 @@ $(document).ready(() => {
     // and updates the HTML on the page
     $.get("/api/user_data").then(data => {
         console.log(data);
+        userData = data;
         $(".username").text("Welcome, " + data.first + "!");
     });
     // Event Handler for axisOTM query:
@@ -38,22 +28,14 @@ $(document).ready(() => {
         }
         console.log(search.city);
         getCitySearch(search.city)
-        // If we have an email and password, run the signUpUser function
-        // console.log(search.city)
-        // // searchCityFunction(search.city)
-        // axiosOTM(search.city)
+
     });
 
-    //   function searchCityFunction(city) {
-    //     $.post("/api/search/", {
-    //       city: city,
-    //     })
-    //       .then((getCitySearch))
-    //   }
-
     function getCitySearch(city) {
-        $.get("/api/user_data/:city", function (data) {
+        $.get("/api/user_data/"+city, function (data) {
             console.log(data);
+            globalData = data
+            document.querySelector('.container-grid').innerHTML = "";
             data.map(item => {
                 document.querySelector('.container-grid').innerHTML +=
                     `<div class="box">
@@ -74,6 +56,19 @@ $(document).ready(() => {
                     </div>
                 </div>`
             })
+
+            $('.category').click(function (event) {
+
+                // Don't follow the link
+                event.preventDefault();
+            
+                // Log the clicked element in the console
+                console.log(event.target);
+                console.log("global data", globalData)
+                var eventData = [];
+ 
+            
+            });
 
 
 
@@ -96,22 +91,35 @@ $(document).ready(() => {
 
 })
 
-function myFunction() {
+function myFunction(item) {
+    console.log("clicky")
+    console.log(item)
     if (sessionStorage.getItem('User') == null || sessionStorage.getItem('User') == undefined || sessionStorage.getItem('User') == '') {
-        activityArr.push(event.target.id);
-        let tripData = {
-            Trip_ID: 1,
-            // User_id: sessionStorage.getItem('User').replace(/\s+/g, '-').toLowerCase(),
-            Country: countryInput,
-            City: cityInput,
-            Activity_1: event.target.id,
+        // activityArr.push(event.target.id);
+        // let tripData = {
+        //     Trip_ID: 1,
+        //     // User_id: sessionStorage.getItem('User').replace(/\s+/g, '-').toLowerCase(),
+        //     Country: countryInput,
+        //     City: cityInput,
+        //     Activity_1: event.target.id,
 
-        }
-        console.log(activityArr);
-        if (activityArr.length === 5) {
-            alert("Exceeded 5");
-        }
-        $.post("/api/activities", tripData)
+        // }
+        // console.log(activityArr);
+        // if (activityArr.length === 5) {
+        //     alert("Exceeded 5");
+        // }
+        // $.post("/api/activities", tripData)
+        console.log("item:",item);
+        $.post("/api/activities",{
+            User_id: userData.id,
+            Country: item.country,
+            City: item.city,
+            ImageURL: item.image,
+            Description: item.description
+        }).then(data => {
+            console.log(data);
+            console.log("userData is:", userData);
+        });
     } else {
         alert('Error! Please login to continue')
     }

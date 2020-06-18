@@ -36,17 +36,22 @@ module.exports = function (app) {
       });
   });
 
+
   app.post("/api/activities", (req, res) => {
     console.log(req.body);
 
 
-    db.activities.create(req.body)
-
+    db.activities.create({
+      User_id: req.body.User_id,
+      Country: req.body.Country,
+      City: req.body.City,
+      ImageURL: req.body.ImageURL,
+      Description:req.body.Description
+    })
+      
       .then((res) => {
-        res.json({ "hello": "hello" });
-        // res.redirect(307, "/api/login");
-
-
+        // res.json({ "hello": "hello" });
+        res.status(307)
       })
       .catch(err => {
         res.status(401).json(err);
@@ -74,8 +79,8 @@ module.exports = function (app) {
 
   //AXIOS
   app.get("/api/user_data/:city", (req, res) => {
-
-    city = req.params.city;
+    var city = req.params.city;
+    console.log("city:", city);
     apiKeyOTM = process.env.OTM_APIKEY
     // axiosOTM(city);
 
@@ -85,9 +90,12 @@ module.exports = function (app) {
     var url = "https://api.opentripmap.com/0.1/en/places/geoname?name=" + city + "&apikey=" + apiKeyOTM + "";
     axios.get(url)
       .then((response) => {
+        console.log(response.data)
         console.log(response.data.lat, response.data.lon);
         var lat = response.data.lat;
         var lon = response.data.lon;
+        var queryCity = response.data.name;
+        var queryCountry = response.data.country;
 
         // Second axios call gathers features within 10KM with a rating of 2 or higher; feature id is "xid"
         url = "https://api.opentripmap.com/0.1/en/places/radius?radius=10000&limit=5&offset=0&rate=2&format=json&lon=" + lon + "&lat=" + lat + "&apikey=" + apiKeyOTM + "";
@@ -109,7 +117,7 @@ module.exports = function (app) {
 
             // Series of axios calls searches the feature ids for a pictures and descriptions and pushes them to an array
             axios.get(url).then((response) => {
-              console.log(response.data);
+              // console.log(response.data);
               image = response.data.preview.source;
               description = response.data.wikipedia_extracts.text;
               imgArr.push(image);
@@ -135,8 +143,6 @@ module.exports = function (app) {
                     descriptionArr.push(description);
                     url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[4] + "?apikey=" + apiKeyOTM + "";
                     axios.get(url).then((response) => {
-                      console.log("this is where we are")
-                      console.log(response.data);
                       image = response.data.preview.source;
                       description = response.data.wikipedia_extracts.text;
                       imgArr.push(image);
@@ -144,13 +150,15 @@ module.exports = function (app) {
                       // push all the arrays into an object and back into a final array of objects;
                       for (var i = 0; i < 5; i++) {
                         var dataObj = {};
+                        dataObj['city'] = queryCity
+                        dataObj['country'] = queryCountry
                         dataObj['name'] = nameArr[i]
                         dataObj['kind'] = kindArr[i]
                         dataObj['image'] = imgArr[i]
                         dataObj['description'] = descriptionArr[i]
                         arr.push(dataObj);
                       }
-                      console.log(arr);
+                      // console.log(arr);
                       res.json(arr);
                       //                 // return arr;
                     })
