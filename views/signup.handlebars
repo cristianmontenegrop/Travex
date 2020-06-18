@@ -1,0 +1,37 @@
+<div class="body"></div>
+<div class="grad"></div>
+<div class="header">
+    <div>Trav<span>Ex</span></div>
+</div>
+<br>
+<form class="login signup">
+    <input type="text" placeholder="first name" id="first-input" name="name">
+    <input type="text" placeholder="last name" id="last-input" name="last">
+    <input type="text" placeholder="username" id="username-input" name="user">
+    <input type="password" placeholder="password" id="password-input" name="password">
+    <button type="submit" class="newButton">Signup</button>
+    {{!-- <input type="button" value="Signup"> --}}
+    <div class="footer">
+        <ul class="social-network social-circle">
+            <li>
+                <a href="/auth/google"><i class="fa fa-google"></i></a>
+            </li>
+
+            <li>
+                <a href="/auth/github"><i class="fa fa-github"></i></a>
+            </li>
+            <li>
+                <a href="/auth/facebook"><i class="fa fa-facebook"></i></a>
+            </li>
+        </ul>
+        <div style="display: none" id="alert" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span> <span class="msg"></span>
+        </div>
+    </div>
+</form>
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://kit.fontawesome.com/a9f3433135.js" crossorigin="anonymous"></script>
+<script src="/js/prefixfree.min.js"></script>
+<script src="/js/signup.js"></script>
+{{!-- <script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script> --}}

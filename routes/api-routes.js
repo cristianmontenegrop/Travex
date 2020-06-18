@@ -1,6 +1,15 @@
 // Requiring our models and passport as we've configured it
 const db = require("../models");
 const passport = require("../config/passport");
+const axios = require("axios");
+// require("axios");
+require("dotenv").config();
+// const arr = [];
+// const nameArr = [];
+// const kindArr = [];
+// const imgArr = [];
+// const descriptionArr = [];
+// const xidArr = [];
 
 module.exports = function(app) {
   // Using the passport.authenticate middleware with our local strategy.
@@ -9,7 +18,7 @@ module.exports = function(app) {
   app.post("/api/login", passport.authenticate("local"), (req, res) => {
     // Sending back a password, even a hashed password, isn't a good idea
     res.json({
-      email: req.user.email,
+      username: req.user.username,
       id: req.user.id
     });
   });
@@ -19,35 +28,199 @@ module.exports = function(app) {
   // otherwise send back an error
   app.post("/api/signup", (req, res) => {
     db.User.create({
-      email: req.body.email,
-      password: req.body.password
+      username: req.body.username,
+      password: req.body.password,
+      first: req.body.first,
+      last: req.body.last
     })
       .then(() => {
+        console.log("RES.REDIRECT, 307");
         res.redirect(307, "/api/login");
       })
       .catch(err => {
+        console.log("ERROR IN API/SIGNUP");
         res.status(401).json(err);
       });
   });
 
-  // Route for logging user out
-  app.get("/logout", (req, res) => {
-    req.logout();
-    res.redirect("/");
+  app.post("/api/activities", (req, res) => {
+    console.log("This is req.body:", req.body);
+    console.log("Country is:", req.body.Country);
+
+    db.activities
+      .create({
+        // eslint-disable-next-line camelcase
+        User_id: req.body.User_id,
+        Country: req.body.Country,
+        City: req.body.City,
+        ImageURL: req.body.ImageURL,
+        Description: req.body.Description
+      })
+      .then(() => {
+        // res.json({ "This": "Worked" });
+        res.status(307);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(401).json(err);
+      });
   });
 
-  // Route for getting some data about our user to be used client side
+  app.get("/api/activities/:id", (req, res) => {
+    const loginId = req.params.id;
+    console.log("userId:", loginId);
+    db.activities
+      .findAll({
+        where: {
+          // eslint-disable-next-line camelcase
+          User_id: loginId
+        }
+      })
+      .then(data => {
+        console.log(data);
+        res.json(data);
+      });
+  });
+
   app.get("/api/user_data", (req, res) => {
+    console.log();
     if (!req.user) {
-      // The user is not logged in, send back an empty object
       res.json({});
     } else {
-      // Otherwise send back the user's email and id
-      // Sending back a password, even a hashed password, isn't a good idea
       res.json({
-        email: req.user.email,
-        id: req.user.id
+        username: req.user.username,
+        id: req.user.id,
+        first: req.user.first,
+        last: req.user.last
       });
     }
+  });
+
+  //AXIOS
+  app.get("/api/user_data/:city", (req, res) => {
+    const city = req.params.city;
+    console.log("city:", city);
+    apiKeyOTM = process.env.OTM_APIKEY;
+    let url =
+      "https://api.opentripmap.com/0.1/en/places/geoname?name=" +
+      city +
+      "&apikey=" +
+      apiKeyOTM +
+      "";
+    axios
+      .get(url)
+      .then(response => {
+        console.log(response.data);
+        console.log(response.data.lat, response.data.lon);
+        let lat = response.data.lat;
+        let lon = response.data.lon;
+        let queryCity = response.data.name;
+        let queryCountry = response.data.country;
+        var arr = [];
+        var nameArr = [];
+        var kindArr = [];
+        var imgArr = [];
+        var descriptionArr = [];
+        var xidArr = [];
+
+        // Second axios call gathers features within 10KM with a rating of 2 or higher; feature id is "xid"
+        url =
+          "https://api.opentripmap.com/0.1/en/places/radius?radius=10000&limit=5&offset=0&rate=2&format=json&lon=" +
+          lon +
+          "&lat=" +
+          lat +
+          "&apikey=" +
+          apiKeyOTM +
+          "";
+        axios.get(url).then(response => {
+          for (let i = 0; i < 5; i++) {
+            nameArr.push(response.data[i].name);
+            kindArr.push(response.data[i].kinds);
+            xidArr.push(response.data[i].xid);
+          }
+          url =
+            "https://api.opentripmap.com/0.1/en/places/xid/" +
+            xidArr[0] +
+            "?apikey=" +
+            apiKeyOTM +
+            "";
+          // Series of axios calls searches the feature ids for a pictures and descriptions and pushes them to an array
+          axios.get(url).then(response => {
+            image = response.data.preview.source;
+            description = response.data.wikipedia_extracts.text;
+            imgArr.push(image);
+            descriptionArr.push(description);
+            url =
+              "https://api.opentripmap.com/0.1/en/places/xid/" +
+              xidArr[1] +
+              "?apikey=" +
+              apiKeyOTM +
+              "";
+            axios.get(url).then(response => {
+              image = response.data.preview.source;
+              description = response.data.wikipedia_extracts.text;
+              imgArr.push(image);
+              descriptionArr.push(description);
+              url =
+                "https://api.opentripmap.com/0.1/en/places/xid/" +
+                xidArr[2] +
+                "?apikey=" +
+                apiKeyOTM +
+                "";
+              axios.get(url).then(response => {
+                image = response.data.preview.source;
+                description = response.data.wikipedia_extracts.text;
+                imgArr.push(image);
+                descriptionArr.push(description);
+                url =
+                  "https://api.opentripmap.com/0.1/en/places/xid/" +
+                  xidArr[3] +
+                  "?apikey=" +
+                  apiKeyOTM +
+                  "";
+                axios.get(url).then(response => {
+                  image = response.data.preview.source;
+                  description = response.data.wikipedia_extracts.text;
+                  imgArr.push(image);
+                  descriptionArr.push(description);
+                  url =
+                    "https://api.opentripmap.com/0.1/en/places/xid/" +
+                    xidArr[4] +
+                    "?apikey=" +
+                    apiKeyOTM +
+                    "";
+                  axios
+                    .get(url)
+                    .then(response => {
+                      image = response.data.preview.source;
+                      description = response.data.wikipedia_extracts.text;
+                      imgArr.push(image);
+                      descriptionArr.push(description);
+                      // push all the arrays into an object and back into a final array of objects;
+                      for (let i = 0; i < 5; i++) {
+                        const dataObj = {};
+                        dataObj.city = queryCity;
+                        dataObj.country = queryCountry;
+                        dataObj.name = nameArr[i];
+                        dataObj.kind = kindArr[i];
+                        dataObj.image = imgArr[i];
+                        dataObj.description = descriptionArr[i];
+                        arr.push(dataObj);
+                      }
+                      // console.log(arr);
+                      res.json(arr);
+                    })
+                    .catch(error => {
+                      console.log(error);
+                    });
+                });
+              });
+            });
+          });
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   });
 };
