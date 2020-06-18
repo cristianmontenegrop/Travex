@@ -26,20 +26,52 @@
   background-size: cover;
 }
 /*  */
+.featured-image-block-grid-header {
+  margin-left: auto;
+  margin-right: auto;
+}
+.featured-image-block {
+  margin-bottom: 20px;
+}
+.featured-image-block .featured-image-block-title {
+  font-weight: 600;
+  margin-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1em;
+  color: #404040;
+}
+.featured-image-block a:hover p {
+  color: #1779BA;
+}
 /*  */
+.buttonColor{
+  border: 1px solid black;
+  border-radius: 25px;
+  background-color: #ccd8ea;
+  text-align: center;
+}
+
+.buttonColor:active{
+  transform:scale(0.9);
+}
 
 .container-grid {
   width: 1100px;
   margin: 20px auto;
   columns: 3;
+  overflow: hidden;
   column-gap: 5px;
+  break-inside: avoid-column !important;
+
 }
 .container-grid .box {
   width: 100%;
   margin: 0 0 20px;
   padding: 10px;
   overflow: hidden;
-  break-inside: avoid;
+  break-inside: avoid-column !important;
+  
 }
 
 .container-grid .box img {

@@ -28,23 +28,31 @@ $(document).ready(() => {
       data.map(item => {
         document.querySelector(
           ".container-grid"
-        ).innerHTML += `<div class="box">
-                <div class="post-module">
-                <div class="thumbnail">
-                    <div class="date">
-                        <div class="day">27</div>
-                        <div class="month">Mar</div>
-                    </div><img src=${item.image} />
-                </div>
-                <div class="post-content">
-                    <div class="category" id="${item.name.replace(/\s+/g, "-").toLowerCase()}" onclick="myFunction()">Add</div>
-                    <h1 class="title">${item.name}</h1>
+        ).innerHTML +=
+          //  <div class="box">
+          //       <div class="post-module">
+          //       <div class="thumbnail">
+          //           <div class="date">
+          //               <div class="day">27</div>
+          //               <div class="month">Mar</div>
+          //           </div><img src=${item.image} />
+          //       </div>
+          //       <div class="post-content">
+          //           <div class="category" id="${item.name.replace(/\s+/g, "-").toLowerCase()}" onclick="myFunction()">Add</div>
+          //           <h1 class="title">${item.name}</h1>
                     
-                    <p class="description">${item.description}</p>
-                    <div class="post-meta"><span class="timestamp"><i class="fa fa-clock-">o</i> 6 mins ago</span><span class="comments"><i class="fa fa-comments"></i><a href="#"> 39 comments</a></span></div>
-                </div>
-                </div>
-            </div>`;
+          //           <p class="description">${item.description}</p>
+          //           <div class="post-meta"><span class="timestamp"><i class="fa fa-clock-">o</i> 6 mins ago</span><span class="comments"><i class="fa fa-comments"></i><a href="#"> 39 comments</a></span></div>
+          //       </div>
+          //       </div>
+          //   </div>
+                    ` <div class="card" style="width: 300px;">
+                          <img src=${item.image}>
+                          <div class="card-section">
+                            <h4>${item.name}</h4>
+                            <p>${item.description}</p>
+                          </div>
+                        </div>`;
       });
     });
   }

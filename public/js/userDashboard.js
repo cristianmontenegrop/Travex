@@ -13,16 +13,36 @@ $(document).ready(() => {
     userData = data;
     $(".username").text("Welcome, " + data.first + "!");
 
+    // $.get("/api/activities/" + userData.id, response => {
+    //   console.log("Activities", response);
+    //   console.log("UserData:", userData.id);
+    //   $("#Activity1").text("City: " + response[0].City);
+    //   $("#Activity1").append("<br/>Description: " + response[0].Description);
+    //   $("#Activity2").text("City: " + response[1].City);
+    //   $("#Activity2").append("<br/>Description: " + response[1].Description);
+    //   $("#Activity3").text("City: " + response[2].City);
+    //   $("#Activity3").append("<br/>Description: " + response[2].Description);
+    // });
+
     $.get("/api/activities/" + userData.id, response => {
-      console.log("Activities", response);
-      console.log("UserData:", userData.id);
-      $("#Activity1").text("City: " + response[0].City);
-      $("#Activity1").append("<br/>Description: " + response[0].Description);
-      $("#Activity2").text("City: " + response[1].City);
-      $("#Activity2").append("<br/>Description: " + response[1].Description);
-      $("#Activity3").text("City: " + response[2].City);
-      $("#Activity3").append("<br/>Description: " + response[2].Description);
+      console.log("Response", response);
+
+      let i = 0;
+      document.querySelector(".container-grid").innerHTML = "";
+      // eslint-disable-next-line array-callback-return
+      response.map(item => {
+        document.querySelector(
+          ".grid-x"
+        ).innerHTML += `
+        <div class="cell">
+                <img class="thumbnail" src=${item.ImageURL} />
+                <h5>${item.City}, ${item.Country}</h5>
+        </div>`;
+        i += 1;
+      });
     });
+
+    
   });
 
   // Event Handler for axisOTM query:
@@ -51,22 +71,32 @@ $(document).ready(() => {
       data.map(item => {
         document.querySelector(
           ".container-grid"
-        ).innerHTML += `<div class="box">
-                <div class="post-module">
-                <div class="thumbnail">
-                    <div class="date">
-                        <div class="day">27</div>
-                        <div class="month">Mar</div>
-                    </div><img src=${item.image} />
-                </div>
-                <div class="post-content">
-                    <div class="category" id="${(item.name).replace(/\s+/g, '-').toLowerCase()}" onclick="myFunction(${i})">Add</div>
-                    <h1 class="title">${item.name}</h1>
+        ).innerHTML += 
+        // `<div class="box">
+        //         <div class="post-module">
+        //         <div class="thumbnail">
+        //             <div class="date">
+        //                 <div class="day">27</div>
+        //                 <div class="month">Mar</div>
+        //             </div><img src=${item.image} />
+        //         </div>
+        //         <div class="post-content">
+        //             <div class="category" id="${(item.name).replace(/\s+/g, '-').toLowerCase()}" onclick="myFunction(${i})">Add</div>
+        //             <h1 class="title">${item.name}</h1>
                     
-                    <p class="description">${item.description}</p>
-                    <div class="post-meta"><span class="timestamp"><i class="fa fa-clock-">o</i> 6 mins ago</span><span class="comments"><i class="fa fa-comments"></i><a href="#"> 39 comments</a></span></div>
-                </div>
-                </div>
+        //             <p class="description">${item.description}</p>
+        //             <div class="post-meta"><span class="timestamp"><i class="fa fa-clock-">o</i> 6 mins ago</span><span class="comments"><i class="fa fa-comments"></i><a href="#"> 39 comments</a></span></div>
+        //         </div>
+        //         </div>
+        //     </div>`
+            `<div class="card" style="width: 300px;">
+               <img src=${item.image}>
+              <div class="card-section">
+               <h4>${item.name}</h4>
+               
+                <p>${item.description}</p>
+                <div class="category buttonColor" id="${(item.name).replace(/\s+/g, '-').toLowerCase()}" onclick="myFunction(${i})">Add</div>
+             </div>
             </div>`;
         i += 1;
       });
