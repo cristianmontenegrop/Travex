@@ -1,9 +1,14 @@
 $(document).ready(() => {
   // Getting references to our form and inputs
   const loginForm = $("form.login");
+  const registerForm = $("form.signupButton");
   const usernameInput = $("input#username-input");
   const passwordInput = $("input#password-input");
 
+  registerForm.on("submit", event =>{
+    event.preventDefault();
+    render("signup");
+  })
   // When the form is submitted, we validate there's an username and password entered
   loginForm.on("submit", event => {
     event.preventDefault();

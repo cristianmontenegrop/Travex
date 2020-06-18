@@ -18,6 +18,12 @@ $(document).ready(() => {
         $.get("/api/activities/"+userData.id, function (response) {
             console.log("Activities",response);
             console.log("UserData:",userData.id);
+            $("#Activity1").text("City: " + response[0].City);
+            $("#Activity1").append("<br/>Description: "+response[0].Description);
+            $("#Activity2").text("City: " + response[1].City);
+            $("#Activity2").append("<br/>Description: "+response[1].Description);
+            $("#Activity3").text("City: " + response[2].City);
+            $("#Activity3").append("<br/>Description: "+response[2].Description);
         });
     });
 
@@ -29,7 +35,6 @@ $(document).ready(() => {
         console.log("click")
         const search = {
             city: cityInput.val().trim(),
-            country: countryInput.val().trim()
         };
 
         if (!search.city) {
