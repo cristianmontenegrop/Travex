@@ -1,7 +1,7 @@
 // Requiring path to so we can use relative routes to our HTML files
 const path = require("path");
 const db = require("../models");
-const passport = require("passport")
+const passport = require("passport");
 
 // Requiring our custom middleware for checking if a user is logged in
 const isAuthenticated = require("../config/middleware/isAuthenticated");
@@ -62,9 +62,7 @@ module.exports = function (app) {
   app.get("/facebook/callback",
     passport.authenticate("facebook", { failureRedirect: "/failed" }),
     (req, res) => {
-      console.log("req:", req.user[0].dataValues);
-      // console.log("res: ", res);
-      res.render("userDashboard", { username: req.user[0].dataValues });
+      res.render("userDashboard", { title: "TravExpress | Explore" });
     }
   );
 
@@ -74,9 +72,7 @@ module.exports = function (app) {
     "/github/callback",
     passport.authenticate("github", { failureRedirect: "/failed" }),
     (req, res) => {
-      console.log("req:", req.user[0].dataValues);
-      // console.log("res: ", res);
-      res.render("userDashboard", { username: req.user[0].dataValues });
+      res.render("userDashboard", { title: "TravExpress | Explore" });
     }
   );
 
@@ -89,17 +85,14 @@ module.exports = function (app) {
     "/google/callback",
     passport.authenticate("google", { failureRedirect: "/failed" }),
     (req, res) => {
-      console.log("req:", req.user[0].dataValues);
-      // console.log("res: ", res);
-      res.render("userDashboard", { username: req.user[0].dataValues });
+      res.render("userDashboard", { title: "TravExpress | Explore" });
     }
   );
 
-  app.get("/profile",
-    require("connect-ensure-login").ensureLoggedIn(),
-    (req, res) => {
-      // console.log(req.user)
-      res.render("profile", { user: req.user[0].dataValues });
-    }
-  );
+  // app.get("/profile",
+  //   require("connect-ensure-login").ensureLoggedIn(),
+  //   (req, res) => {
+  //     res.render("profile", { user: req.user[0].dataValues });
+  //   }
+  // );
 };
