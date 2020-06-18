@@ -58,7 +58,24 @@ module.exports = function (app) {
       });
 
   });
+// ===============================
 
+  app.get("/api/activities/:id", function(req, res) {
+    // Here we add an "include" property to our options in our findOne query
+    // We set the value to an array of the models we want to include in a left outer join
+    // In this case, just db.Post
+    var loginId = req.params.id
+    console.log("userId:",loginId)
+    db.activities.findAll({
+      where: {
+        User_id: loginId
+      }
+    }).then(function(data) {
+      console.log(data);
+      res.json(data);
+    });
+  });
+// ======================================
   // Route for getting some data about our user to be used client side
   app.get("/api/user_data", (req, res) => {
     console.log()
