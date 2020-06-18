@@ -38,22 +38,22 @@ module.exports = function (app) {
 
 
   app.post("/api/activities", (req, res) => {
-    console.log(req.body);
-
+    console.log("This is req.body:",req.body);
+    console.log("Country is:", req.body.Country);
 
     db.activities.create({
       User_id: req.body.User_id,
       Country: req.body.Country,
       City: req.body.City,
       ImageURL: req.body.ImageURL,
-      Description:req.body.Description
-    })
-      
-      .then((res) => {
-        // res.json({ "hello": "hello" });
+      Description: req.body.Description
+    })      
+      .then(() => {
+        // res.json({ "This": "Worked" });
         res.status(307)
       })
       .catch(err => {
+        console.log(err);
         res.status(401).json(err);
       });
 

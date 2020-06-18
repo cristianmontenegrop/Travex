@@ -4,6 +4,7 @@ const cityInput = $("input.city-search")
 const countryInput = $("input.country-search")
 var userData= {};
 var globalData= {};
+var dataArr =[];
 
 $(document).ready(() => {
 
@@ -33,6 +34,8 @@ $(document).ready(() => {
 
     function getCitySearch(city) {
         $.get("/api/user_data/"+city, function (data) {
+            dataArr = data;
+            var i = 0;
             console.log(data);
             globalData = data
             document.querySelector('.container-grid').innerHTML = "";
@@ -47,7 +50,7 @@ $(document).ready(() => {
                         </div><img src=${item.image} />
                     </div>
                     <div class="post-content">
-                        <div class="category" id="${(item.name).replace(/\s+/g, '-').toLowerCase()}" onclick="myFunction()">Add</div>
+                        <div class="category" id="${(item.name).replace(/\s+/g, '-').toLowerCase()}" onclick="myFunction(${i})">Add</div>
                         <h1 class="title">${item.name}</h1>
                         
                         <p class="description">${item.description}</p>
@@ -55,6 +58,7 @@ $(document).ready(() => {
                     </div>
                     </div>
                 </div>`
+                i += 1;
             })
 
             $('.category').click(function (event) {
@@ -94,6 +98,7 @@ $(document).ready(() => {
 function myFunction(item) {
     console.log("clicky")
     console.log(item)
+    console.log("data arr: ", dataArr[item])
     if (sessionStorage.getItem('User') == null || sessionStorage.getItem('User') == undefined || sessionStorage.getItem('User') == '') {
         // activityArr.push(event.target.id);
         // let tripData = {
@@ -109,13 +114,13 @@ function myFunction(item) {
         //     alert("Exceeded 5");
         // }
         // $.post("/api/activities", tripData)
-        console.log("item:",item);
+        // console.log("item:",item);
         $.post("/api/activities",{
             User_id: userData.id,
-            Country: item.country,
-            City: item.city,
-            ImageURL: item.image,
-            Description: item.description
+            Country: dataArr[item].country,
+            City: dataArr[item].city,
+            ImageURL: dataArr[item].image,
+            Description: dataArr[item].description
         }).then(data => {
             console.log(data);
             console.log("userData is:", userData);
