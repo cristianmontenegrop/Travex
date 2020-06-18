@@ -5,14 +5,13 @@ $(document).ready(() => {
   const usernameInput = $("input#username-input");
   const passwordInput = $("input#password-input");
 
-  registerForm.on("submit", event =>{
+  registerForm.on("submit", event => {
     event.preventDefault();
     render("signup");
-  })
+  });
   // When the form is submitted, we validate there's an username and password entered
   loginForm.on("submit", event => {
     event.preventDefault();
-    
     const userData = {
       username: usernameInput.val().trim(),
       password: passwordInput.val().trim()

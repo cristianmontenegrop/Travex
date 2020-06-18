@@ -16,11 +16,21 @@ $(document).ready(() => {
       last: lastInput.val().trim()
     };
 
-    if (!userData.username || !userData.password || !userData.first || !userData.last) {
+    if (
+      !userData.username ||
+      !userData.password ||
+      !userData.first ||
+      !userData.last
+    ) {
       return;
     }
     // If we have an email and password, run the signUpUser function
-    signUpUser(userData.username, userData.password, userData.first, userData.last);
+    signUpUser(
+      userData.username,
+      userData.password,
+      userData.first,
+      userData.last
+    );
     usernameInput.val("");
     passwordInput.val("");
     firstInput.val("");

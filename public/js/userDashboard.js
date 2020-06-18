@@ -1,147 +1,113 @@
-let i = 0
+// let i = 0;
 const citySearch = $("form.searchNow");
-const cityInput = $("input.city-search")
-const countryInput = $("input.country-search")
-var userData= {};
-var globalData= {};
-var dataArr =[];
+const cityInput = $("input.city-search");
+let userData = {};
+let globalData = {};
+let dataArr = [];
+// const eventData = [];
+// const activityArr = [];
 
 $(document).ready(() => {
+  $.get("/api/user_data").then(data => {
+    console.log(data);
+    userData = data;
+    $(".username").text("Welcome, " + data.first + "!");
 
-    // This file just does a GET request to figure out which user is logged in
-    // and updates the HTML on the page
-    $.get("/api/user_data").then(data => {
-        console.log(data);
-        userData = data;
-        $(".username").text("Welcome, " + data.first + "!");
-
-        $.get("/api/activities/"+userData.id, function (response) {
-            console.log("Activities",response);
-            console.log("UserData:",userData.id);
-            $("#Activity1").text("City: " + response[0].City);
-            $("#Activity1").append("<br/>Description: "+response[0].Description);
-            $("#Activity2").text("City: " + response[1].City);
-            $("#Activity2").append("<br/>Description: "+response[1].Description);
-            $("#Activity3").text("City: " + response[2].City);
-            $("#Activity3").append("<br/>Description: "+response[2].Description);
-        });
+    $.get("/api/activities/" + userData.id, response => {
+      console.log("Activities", response);
+      console.log("UserData:", userData.id);
+      $("#Activity1").text("City: " + response[0].City);
+      $("#Activity1").append("<br/>Description: " + response[0].Description);
+      $("#Activity2").text("City: " + response[1].City);
+      $("#Activity2").append("<br/>Description: " + response[1].Description);
+      $("#Activity3").text("City: " + response[2].City);
+      $("#Activity3").append("<br/>Description: " + response[2].Description);
     });
+  });
 
+  // Event Handler for axisOTM query:
+  citySearch.on("submit", event => {
+    event.preventDefault();
+    console.log("click");
+    const search = {
+      city: cityInput.val().trim()
+    };
 
+    if (!search.city) {
+      return;
+    }
+    console.log(search.city);
+    getCitySearch(search.city);
+  });
 
-    // Event Handler for axisOTM query:
-    citySearch.on("submit", event => {
+  function getCitySearch(city) {
+    $.get("/api/user_data/" + city, data => {
+      dataArr = data;
+      let i = 0;
+      console.log(data);
+      globalData = data;
+      document.querySelector(".container-grid").innerHTML = "";
+      // eslint-disable-next-line array-callback-return
+      data.map(item => {
+        document.querySelector(
+          ".container-grid"
+        ).innerHTML += `<div class="box">
+                <div class="post-module">
+                <div class="thumbnail">
+                    <div class="date">
+                        <div class="day">27</div>
+                        <div class="month">Mar</div>
+                    </div><img src=${item.image} />
+                </div>
+                <div class="post-content">
+                    <div class="category" id="${(item.name).replace(/\s+/g, '-').toLowerCase()}" onclick="myFunction(${i})">Add</div>
+                    <h1 class="title">${item.name}</h1>
+                    
+                    <p class="description">${item.description}</p>
+                    <div class="post-meta"><span class="timestamp"><i class="fa fa-clock-">o</i> 6 mins ago</span><span class="comments"><i class="fa fa-comments"></i><a href="#"> 39 comments</a></span></div>
+                </div>
+                </div>
+            </div>`;
+        i += 1;
+      });
+
+      $(".category").click(event => {
+        // Don't follow the link
         event.preventDefault();
-        console.log("click")
-        const search = {
-            city: cityInput.val().trim(),
-        };
-
-        if (!search.city) {
-            return;
-        }
-        console.log(search.city);
-        getCitySearch(search.city)
-
+        // Log the clicked element in the console
+        console.log(event.target);
+        console.log("global data", globalData);
+      });
     });
+  }
 
-    function getCitySearch(city) {
-        $.get("/api/user_data/"+city, function (data) {
-            dataArr = data;
-            var i = 0;
-            console.log(data);
-            globalData = data
-            document.querySelector('.container-grid').innerHTML = "";
-            data.map(item => {
-                document.querySelector('.container-grid').innerHTML +=
-                    `<div class="box">
-                    <div class="post-module">
-                    <div class="thumbnail">
-                        <div class="date">
-                            <div class="day">27</div>
-                            <div class="month">Mar</div>
-                        </div><img src=${item.image} />
-                    </div>
-                    <div class="post-content">
-                        <div class="category" id="${(item.name).replace(/\s+/g, '-').toLowerCase()}" onclick="myFunction(${i})">Add</div>
-                        <h1 class="title">${item.name}</h1>
-                        
-                        <p class="description">${item.description}</p>
-                        <div class="post-meta"><span class="timestamp"><i class="fa fa-clock-">o</i> 6 mins ago</span><span class="comments"><i class="fa fa-comments"></i><a href="#"> 39 comments</a></span></div>
-                    </div>
-                    </div>
-                </div>`
-                i += 1;
-            })
+  //   function isClicked() {
+  //     i++;
+  //   }
+});
 
-            $('.category').click(function (event) {
-
-                // Don't follow the link
-                event.preventDefault();
-            
-                // Log the clicked element in the console
-                console.log(event.target);
-                console.log("global data", globalData)
-                var eventData = [];
- 
-            
-            });
-
-
-
-            //   var rowsToAdd = [];
-            //   for (var i = 0; i < data.length; i++) {
-            //     rowsToAdd.push(createAuthorRow(data[i]));
-            //   }
-            //   renderAuthorList(rowsToAdd);
-            //   nameInput.val("");
-        });
-    }
-    activityArr = [];
-    // event handler
-
-
-    function isClicked() {
-        i++
-
-    }
-
-})
-
+// eslint-disable-next-line no-unused-vars
 function myFunction(item) {
-    console.log("clicky")
-    console.log(item)
-    console.log("data arr: ", dataArr[item])
-    if (sessionStorage.getItem('User') == null || sessionStorage.getItem('User') == undefined || sessionStorage.getItem('User') == '') {
-        // activityArr.push(event.target.id);
-        // let tripData = {
-        //     Trip_ID: 1,
-        //     // User_id: sessionStorage.getItem('User').replace(/\s+/g, '-').toLowerCase(),
-        //     Country: countryInput,
-        //     City: cityInput,
-        //     Activity_1: event.target.id,
-
-        // }
-        // console.log(activityArr);
-        // if (activityArr.length === 5) {
-        //     alert("Exceeded 5");
-        // }
-        // $.post("/api/activities", tripData)
-        // console.log("item:",item);
-        $.post("/api/activities",{
-            User_id: userData.id,
-            Country: dataArr[item].country,
-            City: dataArr[item].city,
-            ImageURL: dataArr[item].image,
-            Description: dataArr[item].description
-        }).then(data => {
-            console.log(data);
-            console.log("userData is:", userData);
-        });
-    } else {
-        alert('Error! Please login to continue')
-    }
-
+  console.log("clicky");
+  console.log(item);
+  console.log("data arr: ", dataArr[item]);
+  if (
+    sessionStorage.getItem("User") === null ||
+    sessionStorage.getItem("User") === undefined ||
+    sessionStorage.getItem("User") === ""
+  ) {
+    $.post("/api/activities", {
+      // eslint-disable-next-line camelcase
+      User_id: userData.id,
+      Country: dataArr[item].country,
+      City: dataArr[item].city,
+      ImageURL: dataArr[item].image,
+      Description: dataArr[item].description
+    }).then(data => {
+      console.log(data);
+      console.log("userData is:", userData);
+    });
+  } else {
+    alert("Error! Please login to continue");
+  }
 }
-
-
