@@ -23,20 +23,26 @@ passport.use(
           username: username
         }
       }).then(dbUser => {
+        console.log("LOCAL STRATEGY")
         // If there's no user with the given email
         if (!dbUser) {
+          console.log("Incorrect email.")
           return done(null, false, {
             message: "Incorrect email."
           });
         }
         // If there is a user with the given email, but the password the user gives us is incorrect
         else if (!dbUser.validPassword(password)) {
+          console.log("Incorrect password.")
           return done(null, false, {
             message: "Incorrect password."
           });
         }
         // If none of the above, return the user
         return done(null, dbUser);
+      }).catch(err => {
+        console.log(err);
+        return done(err, null)
       });
     }
   )
@@ -51,7 +57,6 @@ passport.use(
       profileFields: ["id", "displayName", "name", "photos", "email"]
     },
     (accessToken, refreshToken, profile, cb) => {
-      // console.log(profile);
       db.User.findOrCreate({
         where: { facebookId: profile.id },
         defaults: {
@@ -62,8 +67,7 @@ passport.use(
           password: "facebookId"
         }
       }).then(user => {
-        // console.log(user);
-        return cb(null, user);
+        return cb(null, user[0]);
       });
     }
   )
@@ -75,10 +79,9 @@ passport.use(
       clientID: process.env.GITHUB_CLIENT,
       clientSecret: process.env.GITHUB_SECRET,
       // callbackURL: "https://travexproject.herokuapp.com/github/callback"
-      callbackURL: "http://localhost:8080/github/callback"
+      callbackURL: "http://localhost:" + PORT + "/github/callback"
     },
     (accessToken, refreshToken, profile, cb) => {
-      // console.log(profile);
       db.User.findOrCreate({
         where: { githubId: profile.id },
         defaults: {
@@ -89,8 +92,7 @@ passport.use(
           password: "githubId"
         }
       }).then(user => {
-        // console.log(user);
-        return cb(null, user);
+        return cb(null, user[0]);
       });
     }
   )
@@ -115,9 +117,7 @@ passport.use(
           password: "googleId"
         }
       }).then(user => {
-        // console.log("profile:", user);
-        // console.log("user:", user);
-        return cb(null, user);
+        return cb(null, user[0]);
       });
     }
   )
@@ -128,28 +128,13 @@ passport.use(
 // Just consider this part boilerplate needed to make it all work
 passport.serializeUser((user, cb) => {
   console.log("serializeUser");
-  // console.log(user);
   cb(null, user);
 });
 
-// passport.serializeUser((user, done) => {
-//   console.log("serializing user: ", user.id);
-//   done(null, user.id);
-// });
-
 passport.deserializeUser((obj, cb) => {
   console.log("deserializeUser");
-  // console.log(user);
   cb(null, obj);
 });
-
-// passport.deserializeUser((id, done) => {
-//   db.User.findById(id)
-//     .then(user => {
-//       done(null, user);
-//     })
-//     .catch(done);
-// });
 
 // Exporting our configured passport
 module.exports = passport;

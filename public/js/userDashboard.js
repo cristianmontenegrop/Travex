@@ -22,19 +22,19 @@ $(document).ready(() => {
     // and updates the HTML on the page
     $.get("/api/user_data").then(data => {
         console.log(data);
-        $(".username").text("Welcome, " + data.username + "!");
+        $(".username").text("Welcome, " + data.first + "!");
     });
     // Event Handler for axisOTM query:
     citySearch.on("submit", event => {
         event.preventDefault();
         console.log("click")
         const search = {
-          city: cityInput.val().trim(),
-          country: countryInput.val().trim()
+            city: cityInput.val().trim(),
+            country: countryInput.val().trim()
         };
-    
+
         if (!search.city) {
-          return;
+            return;
         }
         console.log(search.city);
         getCitySearch(search.city)
@@ -42,21 +42,21 @@ $(document).ready(() => {
         // console.log(search.city)
         // // searchCityFunction(search.city)
         // axiosOTM(search.city)
-      });
-    
-        //   function searchCityFunction(city) {
-        //     $.post("/api/search/", {
-        //       city: city,
-        //     })
-        //       .then((getCitySearch))
-        //   }
-    
-      function getCitySearch(city) {
-        $.get("/api/user_data/:city", function(data) {
+    });
+
+    //   function searchCityFunction(city) {
+    //     $.post("/api/search/", {
+    //       city: city,
+    //     })
+    //       .then((getCitySearch))
+    //   }
+
+    function getCitySearch(city) {
+        $.get("/api/user_data/:city", function (data) {
             console.log(data);
             data.map(item => {
                 document.querySelector('.container-grid').innerHTML +=
-                `<div class="box">
+                    `<div class="box">
                     <div class="post-module">
                     <div class="thumbnail">
                         <div class="date">
@@ -77,25 +77,25 @@ $(document).ready(() => {
 
 
 
-        //   var rowsToAdd = [];
-        //   for (var i = 0; i < data.length; i++) {
-        //     rowsToAdd.push(createAuthorRow(data[i]));
-        //   }
-        //   renderAuthorList(rowsToAdd);
-        //   nameInput.val("");
+            //   var rowsToAdd = [];
+            //   for (var i = 0; i < data.length; i++) {
+            //     rowsToAdd.push(createAuthorRow(data[i]));
+            //   }
+            //   renderAuthorList(rowsToAdd);
+            //   nameInput.val("");
         });
     }
-    activityArr =[];
+    activityArr = [];
     // event handler
 
 
-    function isClicked(){
+    function isClicked() {
         i++
 
     }
 
 })
-    
+
 function myFunction() {
     if (sessionStorage.getItem('User') == null || sessionStorage.getItem('User') == undefined || sessionStorage.getItem('User') == '') {
         activityArr.push(event.target.id);
@@ -108,7 +108,7 @@ function myFunction() {
 
         }
         console.log(activityArr);
-        if(activityArr.length===5){
+        if (activityArr.length === 5) {
             alert("Exceeded 5");
         }
         $.post("/api/activities", tripData)
@@ -159,7 +159,7 @@ function myFunction() {
     //     })
     // }
 
-    
+
 // })
 
 

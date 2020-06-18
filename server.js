@@ -4,6 +4,7 @@ const app = express();
 const session = require("express-session");
 const passport = require("./config/passport");
 const exphbs = require("express-handlebars");
+const flash = require("connect-flash");
 
 // Setting up Handlebars
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
@@ -40,7 +41,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(flash());
 // Requiring our routes
 require("./routes/html-routes.js")(app);
 require("./routes/api-routes.js")(app);

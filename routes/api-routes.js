@@ -27,9 +27,11 @@ module.exports = function (app) {
       last: req.body.last
     })
       .then(() => {
+        console.log("RES.REDIRECT, 307")
         res.redirect(307, "/api/login");
       })
       .catch(err => {
+        console.log("ERROR IN API/SIGNUP")
         res.status(401).json(err);
       });
   });
@@ -41,7 +43,7 @@ module.exports = function (app) {
     db.activities.create(req.body)
 
       .then((res) => {
-        res.json({"hello":"hello"});
+        res.json({ "hello": "hello" });
         // res.redirect(307, "/api/login");
 
 
@@ -63,7 +65,9 @@ module.exports = function (app) {
       // Sending back a password, even a hashed password, isn't a good idea
       res.json({
         username: req.user.username,
-        id: req.user.id
+        id: req.user.id,
+        first: req.user.first,
+        last: req.user.last
       });
     }
   });
@@ -77,90 +81,90 @@ module.exports = function (app) {
 
     //Setup OpenTripMap axios call:
     // function axiosOTM(city) {
-      // First axios call gathers latitue and longitude based on city query
-      var url = "https://api.opentripmap.com/0.1/en/places/geoname?name=" + city + "&apikey=" + apiKeyOTM + "";
-      axios.get(url)
-        .then((response) => {
-          console.log(response.data.lat, response.data.lon);
-          var lat = response.data.lat;
-          var lon = response.data.lon;
+    // First axios call gathers latitue and longitude based on city query
+    var url = "https://api.opentripmap.com/0.1/en/places/geoname?name=" + city + "&apikey=" + apiKeyOTM + "";
+    axios.get(url)
+      .then((response) => {
+        console.log(response.data.lat, response.data.lon);
+        var lat = response.data.lat;
+        var lon = response.data.lon;
 
-          // Second axios call gathers features within 10KM with a rating of 2 or higher; feature id is "xid"
-          url = "https://api.opentripmap.com/0.1/en/places/radius?radius=10000&limit=5&offset=0&rate=2&format=json&lon=" + lon + "&lat=" + lat + "&apikey=" + apiKeyOTM + "";
-          axios.get(url)
-            .then((response) => {
-              var arr = [];
-              var nameArr = [];
-              var kindArr = [];
-              var imgArr = [];
-              var descriptionArr = [];
-              var xidArr = []
+        // Second axios call gathers features within 10KM with a rating of 2 or higher; feature id is "xid"
+        url = "https://api.opentripmap.com/0.1/en/places/radius?radius=10000&limit=5&offset=0&rate=2&format=json&lon=" + lon + "&lat=" + lat + "&apikey=" + apiKeyOTM + "";
+        axios.get(url)
+          .then((response) => {
+            var arr = [];
+            var nameArr = [];
+            var kindArr = [];
+            var imgArr = [];
+            var descriptionArr = [];
+            var xidArr = []
 
-              for (var i = 0; i < 5; i++) {
-                nameArr.push(response.data[i].name)
-                kindArr.push(response.data[i].kinds);
-                xidArr.push(response.data[i].xid)
-              }
-              url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[0] + "?apikey=" + apiKeyOTM + "";
+            for (var i = 0; i < 5; i++) {
+              nameArr.push(response.data[i].name)
+              kindArr.push(response.data[i].kinds);
+              xidArr.push(response.data[i].xid)
+            }
+            url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[0] + "?apikey=" + apiKeyOTM + "";
 
-              // Series of axios calls searches the feature ids for a pictures and descriptions and pushes them to an array
+            // Series of axios calls searches the feature ids for a pictures and descriptions and pushes them to an array
+            axios.get(url).then((response) => {
+              console.log(response.data);
+              image = response.data.preview.source;
+              description = response.data.wikipedia_extracts.text;
+              imgArr.push(image);
+              descriptionArr.push(description);
+              url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[1] + "?apikey=" + apiKeyOTM + "";
               axios.get(url).then((response) => {
-                console.log(response.data);
                 image = response.data.preview.source;
                 description = response.data.wikipedia_extracts.text;
                 imgArr.push(image);
                 descriptionArr.push(description);
-                url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[1] + "?apikey=" + apiKeyOTM + "";
+                url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[2] + "?apikey=" + apiKeyOTM + "";
                 axios.get(url).then((response) => {
+
                   image = response.data.preview.source;
                   description = response.data.wikipedia_extracts.text;
                   imgArr.push(image);
                   descriptionArr.push(description);
-                  url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[2] + "?apikey=" + apiKeyOTM + "";
+                  url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[3] + "?apikey=" + apiKeyOTM + "";
                   axios.get(url).then((response) => {
-
                     image = response.data.preview.source;
                     description = response.data.wikipedia_extracts.text;
                     imgArr.push(image);
                     descriptionArr.push(description);
-                    url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[3] + "?apikey=" + apiKeyOTM + "";
+                    url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[4] + "?apikey=" + apiKeyOTM + "";
                     axios.get(url).then((response) => {
+                      console.log("this is where we are")
+                      console.log(response.data);
                       image = response.data.preview.source;
                       description = response.data.wikipedia_extracts.text;
                       imgArr.push(image);
                       descriptionArr.push(description);
-                      url = "https://api.opentripmap.com/0.1/en/places/xid/" + xidArr[4] + "?apikey=" + apiKeyOTM + "";
-                      axios.get(url).then((response) => {
-                        console.log("this is where we are")
-                        console.log(response.data);
-                        image = response.data.preview.source;
-                        description = response.data.wikipedia_extracts.text;
-                        imgArr.push(image);
-                        descriptionArr.push(description);
-                        // push all the arrays into an object and back into a final array of objects;
-                        for (var i = 0; i < 5; i++) {
-                          var dataObj = {};
-                          dataObj['name'] = nameArr[i]
-                          dataObj['kind'] = kindArr[i]
-                          dataObj['image'] = imgArr[i]
-                          dataObj['description'] = descriptionArr[i]
-                          arr.push(dataObj);
-                        }
-                        console.log(arr);
-                        res.json(arr);
-        //                 // return arr;
-                      })
-                        .catch((error) => {
-                          console.log(error)
-                        })
+                      // push all the arrays into an object and back into a final array of objects;
+                      for (var i = 0; i < 5; i++) {
+                        var dataObj = {};
+                        dataObj['name'] = nameArr[i]
+                        dataObj['kind'] = kindArr[i]
+                        dataObj['image'] = imgArr[i]
+                        dataObj['description'] = descriptionArr[i]
+                        arr.push(dataObj);
+                      }
+                      console.log(arr);
+                      res.json(arr);
+                      //                 // return arr;
                     })
+                      .catch((error) => {
+                        console.log(error)
+                      })
                   })
                 })
               })
             })
-        }).catch((error) => {
-           console.log(error)
-        });
+          })
+      }).catch((error) => {
+        console.log(error)
+      });
     // }
     // res.json({"hello":"hello"})
   })
