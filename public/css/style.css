@@ -44,6 +44,10 @@
 .featured-image-block a:hover p {
   color: #1779BA;
 }
+
+#top-locations{
+  text-align:center;
+}
 /*  */
 .buttonColor{
   border: 1px solid black;
@@ -54,6 +58,12 @@
 
 .buttonColor:active{
   transform:scale(0.9);
+}
+footer {
+  /* position: absolute; */
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;            /* Footer height */
 }
 
 .container-grid {
@@ -73,7 +83,9 @@
   break-inside: avoid-column !important;
   
 }
-
+#traveler{
+  text-align:center;
+}
 .container-grid .box img {
   max-width: 100%;
   size: cover;
