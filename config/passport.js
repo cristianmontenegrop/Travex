@@ -56,7 +56,7 @@ passport.use(
       clientSecret: process.env.FACEBOOK_SECRET,
       callbackURL: "https://travexproject.herokuapp.com/facebook/callback",
       // callbackURL: "http://localhost:" + PORT + "/facebook/callback"
-      // profileFields: ["id", "displayName", "name", "photos", "email"]
+      profileFields: ["id", "displayName", "name", "photos", "email"]
     },
     (accessToken, refreshToken, profile, cb) => {
       db.User.findOrCreate({
