@@ -40,7 +40,7 @@ So that I can organize and plan my future trips accordingly
 * Storing users data adds gateway for further additions, such as Machine Learning and data prediction to start giving predictions on which locations the user will want to visit next.
 
 ## Learning Experiences
-* Creating a complete full-stack application that implements CRUD (***C***reate, ***R***ead, ***U***pdate, ***D***elete), and rendering of server side templating engine, such as handlebars, to process, filter, and display data for user interaction.
+* Creating a complete full-stack application that implements Get and Post routes to save and retrieve information from the database, and rendering of server side templating engine, such as handlebars, to process, filter, and display data for user interaction.
 * Usage of Travis.yml & eslint to filter, clean, and test code for inconsistencies or errors.
 * OAuth to maximize security on website and to scrape as much user data, while simultaneously further linking the web through third party verification means.
 * Used various forms of middlewear on backend to filter and sort data to further enhance validity of data stored.
